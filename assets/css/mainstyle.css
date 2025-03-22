@@ -240,6 +240,18 @@ footer {
 }
 
 @media (max-width: 480px) {
+
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        margin-left: auto;
+        margin-right: 0;
+    }
+    
     .main-logo img {
         height: 120px; /* Adjusted for very small screens */
     }
