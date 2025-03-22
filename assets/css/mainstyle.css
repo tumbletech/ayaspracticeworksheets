@@ -216,8 +216,8 @@ footer {
     }
 
     .navbar-toggler {
-        margin-left: auto;
-        margin-right: auto;
+        margin: 0 auto;
+        display: block;
     }
 
     .main-logo img {
@@ -248,8 +248,8 @@ footer {
     }
 
     .navbar-toggler {
-        margin-left: auto;
-        margin-right: auto;
+        margin: 0 auto;
+        display: block;
     }
     
     .main-logo img {
