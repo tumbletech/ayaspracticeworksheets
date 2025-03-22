@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Chewy&family=Comic+Neue:wght@400;700&display=swap');
+
+/* Main Style for Aya's Kinder Practice Worksheets */
+
+/* General Reset */
+body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100%;
+    padding: 0;
+    background: #ECEFF1;
+    font-family: 'Fredoka One', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #728FCE !important;
+}
+
+.navbar-nav a {
+    color: #fdef61;
+}
+
+section {
+    height: 960px;
+    justify-content: center;
+    flex: 1;
+    padding-bottom: 20px;
+}
+
+/* Fonts */
+
+h1, h2, h3 {
+    font-family: 'Chewy', cursive;
+}
+
+p {
+    font-family: 'Comic Neue', sans-serif;
+}
+
+.container {
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Welcome Message*/
+
+h1 {
+    font-size: 2.5rem;
+    color: #37474F;
+    font-weight: bold;
+    text-shadow: 1px 1px #fff;
+    margin-top: 0px;
+}
+
+/* Welcome */
+
+#welcome-text {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#welcome-text h1 {
+    font-size: 3rem;
+    color: #ff6f61;
+    font-weight: bold;
+}
+
+.welcome2 {
+    font-family: 'Winky Sans', sans-serif !important;
+    font-weight: 500;
+}
+
+.p-2 {
+    font-family: 'Caveat', sans-serif;
+    font-size: 20px;
+}
+
+/* The Worksheets Section */
+
+/*#container-worksheets .row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#container-worksheets .row .col-md-5 {
+    margin: 5px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+#container-worksheets .row .col-md-5:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}*/
+
+.icon-subject {
+    height: 85%;
+    width: 70%;
+    border-color: black;
+    border-radius: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.icon-subject:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Call to Action */
+#call-to-action {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #181816;
+    font-weight: bold;
+}
+
+footer {
+    height: 95px;
+    position: sticky;
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .row-justify-content-center.gap-3 {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .row {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .col-md-5 {
+        max-width: 90%;
+        margin: 10px auto;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        min-height: 160vh;
+    }
+
+    .icon-subject {
+        width: 100%;
+        height: auto;
+    }
+    
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        bottom: 0;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    body, html {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        margin: 0 auto;
+        display: block;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 60px;
+        min-height: 150vh;
+    }
+
+    .row-justify-content-center.gap-3 {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .row {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .col-md-5 {
+        max-width: 90%;
+        margin: 10px auto;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        bottom: 0;
+    }
+}
