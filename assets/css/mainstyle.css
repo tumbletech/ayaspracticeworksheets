@@ -3,13 +3,18 @@
 /* Main Style for Aya's Kinder Practice Worksheets */
 
 /* General Reset */
-body {
+body, html {
     font-family: Arial, sans-serif;
     margin: 0;
-    height: auto;
+    height: 100%;
     padding: 0;
     background: #ECEFF1;
     font-family: 'Fredoka One', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 /* Navigation Bar */
@@ -24,6 +29,8 @@ body {
 section {
     height: 960px;
     justify-content: center;
+    flex: 1;
+    padding-bottom: 20px;
 }
 
 /* Fonts */
@@ -135,74 +142,10 @@ h1 {
     color: #181816;
     font-weight: bold;
 }
- 
-/* Scoring Section */
-.scoring-section {
-    margin-top: 50px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-.scoring-section h2 {
-    text-align: center;
-}
-.scoring-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-.scoring-form select, .scoring-form input, .scoring-form button {
-    width: 100%;
-    max-width: 300px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-.scoring-form button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-.scoring-form button:hover {
-    background-color: #0056b3;
-}
-
-/* Dropdown Styling */
-.dropdown {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 10px;
-}
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 100%;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    z-index: 1;
-}
-.dropdown-content a {
-    color: black;
-    padding: 10px;
-    display: block;
-    text-decoration: none;
-}
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-.dropdown:hover .dropdown-content {
-    display: block;
-}
 
 footer {
     height: 95px;
-    position: relative;
+    position: sticky;
     width: 100%;
 }
 
@@ -237,6 +180,29 @@ footer {
         width: 100%;
         max-width: 300px;
     }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        min-height: 160vh;
+    }
+
+    section {
+        flex: 1;
+        padding-bottom: 60px;
+        min-height: 100vh;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        z-index: 10;
+    }
+
 }
 
 @media (max-width: 480px) {
@@ -263,5 +229,25 @@ footer {
     .btn {
         font-size: 0.9rem;
         padding: 8px 12px;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 60px;
+        min-height: 150vh;
+    }
+
+    section {
+        flex: 1;
+        padding-bottom: 60px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        z-index: 10px;
     }
 }
