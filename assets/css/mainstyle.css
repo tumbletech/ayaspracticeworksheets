@@ -202,7 +202,7 @@ h1 {
 
 footer {
     height: 95px;
-    position: fixed;
+    position: relative;
     width: 100%;
 }
 
@@ -251,7 +251,7 @@ footer {
         margin: 0 auto;
         display: block;
     }
-    
+
     .main-logo img {
         height: 120px; /* Adjusted for very small screens */
     }
