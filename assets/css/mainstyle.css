@@ -65,6 +65,16 @@ h1 {
     font-weight: bold;
 }
 
+.welcome2 {
+    font-family: 'Winky Sans', sans-serif !important;
+    font-weight: 500;
+}
+
+.p-2 {
+    font-family: 'Caveat', sans-serif;
+    font-size: 20px;
+}
+
 /* Key Features Section */
 
 #key-features .row {
