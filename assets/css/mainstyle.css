@@ -210,14 +210,14 @@ footer {
 @media (max-width: 768px) {
 
     .navbar-brand {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: auto;
+        display: block;
+        width: 100%;
+        text-align: center;
     }
 
     .navbar-toggler {
         margin-left: auto;
+        margin-right: 0;
     }
 
     .main-logo img {
