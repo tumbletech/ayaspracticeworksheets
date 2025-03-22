@@ -1,73 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Chewy&family=Comic+Neue:wght@400;700&display=swap');
+
 /* Main Style for Aya's Kinder Practice Worksheets */
 
 /* General Reset */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
+    height: auto;
     padding: 0;
+    background: #ECEFF1;
+    font-family: 'Fredoka One', sans-serif;
 }
 
-/* Centering the Main Logo */
-.main-logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-}
-.main-logo img {
-    max-width: 70%;
-    height: 80%;
+/* Navigation Bar */
+.navbar {
+    background-color: #728FCE !important;
 }
 
-/*Narrative Section*/
-.home-container {
-    display: flex;
-    align-items: center;
+.navbar-nav a {
+    color: #fdef61;
+}
+
+section {
+    height: 960px;
     justify-content: center;
-    padding: 50px 10%;
+}
+
+/* Fonts */
+
+h1, h2, h3 {
+    font-family: 'Chewy', cursive;
+}
+
+p {
+    font-family: 'Comic Neue', sans-serif;
+}
+
+.container {
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Welcome Message*/
+
+h1 {
+    font-size: 2.5rem;
+    color: #37474F;
+    font-weight: bold;
+    text-shadow: 1px 1px #fff;
+    margin-top: 0px;
+}
+
+/* Welcome */
+
+#welcome-text {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#welcome-text h1 {
+    font-size: 3rem;
+    color: #ff6f61;
+    font-weight: bold;
+}
+
+/* Key Features Section */
+
+#key-features .row {
+    display: flex;
+    justify-content: center;
     flex-wrap: wrap;
-    height: 1250px;
+    gap: 20px;
 }
 
-.row {
-    justify-content: center;
-    align-items: center;
-}
-
-.logo-box {
-    max-width: 50%;
-    text-align: center;
-}
-
-.logo-box img {
-    max-width: 100%;
-    height: auto;
-    align-items: center;
-    margin-top: -300px;
-}
-
-.narrative-box {
-    background-color: #f8f9fa;
+#key-features .col-md-3 {
+    margin: 10px;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 1300px;
-    text-align: justify;
-    font-family: 'Poppins', sans-serif;
-    height: auto;
-    line-height: 1.8;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    min-width: 250px;
 }
 
-.narrative-box h1 {
-    text-align: center;
+#key-features .col-md-3:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2)
 }
 
-.worksheet-section {
-    margin-top: 40px;
-    text-align: center;
-    margin-top: -200px;
+/* What's Inside Section */
+
+#whats-inside .row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
+#whats-inside .col-md-3 {
+    margin: 10px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    min-width: 250px;
+}
+
+#whats-inside .col-md-3:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.icon-subject {
+    height: 100%;
+    width: 100%;
+}
+
+/* Call to Action */
+#call-to-action {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #181816;
+    font-weight: bold;
+}
+ 
 /* Scoring Section */
 .scoring-section {
     margin-top: 50px;
@@ -133,7 +191,9 @@ body {
 }
 
 footer {
-    height: 70px;
+    height: 95px;
+    position: fixed;
+    width: 100%;
 }
 
 /* Responsive Design */
