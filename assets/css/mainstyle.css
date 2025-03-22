@@ -208,6 +208,18 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
+    .navbar-brand {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+    }
+
+    .navbar-toggler {
+        margin-left: auto;
+    }
+
     .main-logo img {
         height: 150px; /* Adjusted for smaller screens */
     }
