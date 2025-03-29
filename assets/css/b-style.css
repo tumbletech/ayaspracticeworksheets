@@ -38,6 +38,7 @@ p {
 .container {
     text-align: center;
     margin: 0 auto;
+    height: 100%;
 }
 
 /* Welcome Message */
@@ -125,89 +126,110 @@ footer {
         display: block;
     }
 
-    body, html {
+    .main-logo img {
+        height: 150px;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .row {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .col-md-3 {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .support-box {
+        width: 90%;
+        margin: 5px auto;
+    }
+
+    #box-1, #box-2 {
+        width: 100%;
+        margin: 5px auto;
+    }
+
+    body {
         display: flex;
         flex-direction: column;
         margin: 0;
         padding: 0;
+        min-height: 160vh;
+    }
+
+    section {
+        flex: 1;
+        padding-bottom: 60px;
         min-height: 100vh;
-        height: 100%;
     }
 
-    .logo {
-        width: 250px;
-        height: auto;
-        margin: 20px;
-        padding: 10px;
-    }
-
-    .container {
-        text-align: center;
-        margin: 10px auto;
-        padding: 10px 0;
-    }
-
-    .mission-section {
-        height: 100%;
-    }
 
     footer {
-        position: sticky;
+        position: fixed;
         bottom: 0;
         width: 100%;
         padding: 10px 0;
         bottom: 0;
+        height: 160px;
     }
 }
 
 @media (max-width: 480px) {
 
-    body, html {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
+        .navbar-brand {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+    
+        .navbar-toggler {
+            margin: 0 auto;
+            display: block;
+        }
+    
+        .main-logo img {
+            height: 120px;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+        }
+        
+        .btn {
+            font-size: 0.9rem;
+            padding: 8px 12px;
+        }
+    
+        .support-box {
+            width: 100%;
+            margin: 5px auto;
+            padding: 15px;
+        }
+    
+        body {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 60px;
+            min-height: 150vh;
+        }
+    
+        section {
+            flex: 1;
+            padding-bottom: 60px;
+        }
+    
 
-    .navbar-brand {
-        display: block;
-        width: 100%;
-        text-align: center;
-    }
-
-    .navbar-toggler {
-        margin: 0 auto;
-        display: block;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .logo {
-        width: 300px;
-        height: auto;
-        margin: 10px auto;
-        padding: 5px;
-    }
-
-    .container {
-        text-align: center;
-        margin: 5px auto;
-        padding: 5px;
-    }
-
-    .mission-section {
-        height: 100%;
-    }
-
-    footer {
-        position: sticky;
-        bottom: 0;
-        width: 100%;
-        padding: 10px 0;
-        bottom: 0;
-    }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 0;
+            z-index: 10;
+            height: 110px;
+        }
 }
