@@ -186,13 +186,13 @@ footer {
         flex-direction: column;
         margin: 0;
         padding: 0;
-        min-height: 160vh;
+        min-height: 300vh;
     }
 
     section {
         flex: 1;
         padding-bottom: 60px;
-        min-height: 100vh;
+        min-height: 200vh;
     }
 
     footer {
@@ -236,12 +236,13 @@ footer {
         display: flex;
         flex-direction: column;
         padding-bottom: 60px;
-        min-height: 150vh;
+        min-height: 255vh;
     }
 
     section {
         flex: 1;
         padding-bottom: 60px;
+        height: 220px;
     }
 
     footer {
