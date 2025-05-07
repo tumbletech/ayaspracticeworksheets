@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Chewy&family=Comic+Neue:wght@400;700&display=swap');
 
 /* Main Style for Aya's Kinder Practice Worksheets */
@@ -138,3 +139,147 @@ footer {
         font-size: 0.8rem;
     }
 }
+=======
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Chewy&family=Comic+Neue:wght@400;700&display=swap');
+
+/* Main Style for Aya's Kinder Practice Worksheets */
+
+/* General Reset */
+body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100%;
+    padding: 0;
+    background: #ECEFF1;
+    font-family: 'Fredoka One', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    flex: 1;
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #728FCE !important;
+}
+
+.navbar-nav a {
+    color: #fdef61;
+}
+
+/* Fonts */
+
+h1, h2, h3 {
+    font-family: 'Chewy', cursive;
+}
+
+p {
+    font-family: 'Comic Neue', sans-serif;
+}
+
+
+/* Welcome Message*/
+
+h1 {
+    font-size: 2.5rem;
+    color: #37474F;
+    font-weight: bold;
+    text-shadow: 1px 1px #fff;
+    margin-top: 0px;
+}
+
+/* The Buttons */
+
+#kid-btn {
+    background-color: #87CEEB;
+    color: white;
+    font-family: 'Fredoka One', sans-serif;
+    font-size: 1.5rem;
+    padding: 20px 40px;
+    margin: 10px;
+    border-radius: 12px;
+    border: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+#kid-btn:hover {
+    background-color: #ffd700;
+    transform: scale(1.1);
+}
+
+footer {
+    height: 95px;
+    position: relative;
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        margin: 0 auto;
+        display: block;
+    }
+
+    #kid-btn {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+        margin: 5px;
+    }
+    
+   
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 0.9rem;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        margin: 0 auto;
+        display: block;
+    }
+
+    #kid-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+        margin: 3px;
+    }
+
+    
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 0.8rem;
+    }
+}
+>>>>>>> 268fa5d0e56be2cb9e06805325702e6af1b2a4cf

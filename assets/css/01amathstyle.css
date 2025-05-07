@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Main Style for Aya's | Counting Activities */
 
 /* General Reset */
@@ -183,3 +184,190 @@ footer {
     font-size: 0.9rem;
     }
 }
+=======
+/* Main Style for Aya's | Counting Activities */
+
+/* General Reset */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 100px;
+}
+
+body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100%;
+    padding: 0;
+    background: #ECEFF1;
+    font-family: 'Fredoka One', sans-serif;
+}
+
+
+#main-section {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 1.8rem;
+    height: 1300px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #728FCE !important;
+}
+
+.navbar-nav a {
+    color: #fdef61;
+}
+
+section {
+    height: 960px;
+    justify-content: center;
+    flex: 1;
+    padding-bottom: 20px;
+}
+
+/* Fonts */
+
+h1, h2, h3 {
+    font-family: 'Chewy', cursive;
+}
+
+p {
+    font-family: 'Comic Neue', sans-serif;
+}
+
+.worksheet-title {
+    font-weight: 800;
+    font-size: 40px;
+    padding: 10px;
+    color: blue;
+}
+
+.img-thumbnail {
+    border: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.img-thumbnail:hover {
+    transform: scale(2);
+    cursor: pointer;
+}
+
+.table td {
+    vertical-align: center;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    font-size: 0.95rem;
+    padding: 10px 20px;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+footer {
+    height: 95px;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #main-section {
+        height: 1000px;
+    }
+
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        margin: 0 auto;
+        display: block;
+    }
+
+    .main-logo img {
+        height: 150px; /* Adjusted for smaller screens */
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+   #worksheet-list td {
+        font-size: 0.95rem;
+        line-height: 1.4;
+   }
+   
+   table th {
+        font-size: 1rem;
+   }
+
+   h3 {
+        font-size: 1.5rem;
+   }
+
+   .img-thumbnail {
+        width: 110px;
+   }
+
+   footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    #main-section {
+        height: 1000px;
+    }
+
+    .main-logo img {
+        height: 120px; /* Adjusted for very small screens */
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    #worksheet-list td {
+        font-size: 0.85rem;
+        line-height: 1.2;
+   }
+   
+   table th {
+        font-size: 1rem;
+   }
+
+   h3 {
+        font-size: 1.2rem;
+   }
+
+   .img-thumbnail {
+        width: 95px;
+   }
+
+   footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 0.9rem;
+    }
+}
+>>>>>>> 268fa5d0e56be2cb9e06805325702e6af1b2a4cf

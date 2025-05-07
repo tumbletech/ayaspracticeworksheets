@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Chewy&family=Comic+Neue:wght@400;700&display=swap');
 
 /* Main Style for Aya's Kinder Practice Worksheets */
@@ -188,3 +189,195 @@ footer {
         height: 110px;
     }
 }
+=======
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Chewy&family=Comic+Neue:wght@400;700&display=swap');
+
+/* Main Style for Aya's Kinder Practice Worksheets */
+
+/* General Reset */
+body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100%;
+    padding: 0;
+    background: #ECEFF1;
+    font-family: 'Fredoka One', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #728FCE !important;
+}
+
+.navbar-nav a {
+    color: #fdef61;
+}
+
+section {
+    height: auto;
+    justify-content: center;
+    flex: 1;
+    padding-bottom: 20px;
+}
+
+/* Fonts */
+h1, h2, h3 {
+    font-family: 'Chewy', cursive;
+}
+
+p {
+    font-family: 'Comic Neue', sans-serif;
+}
+
+.container {
+    text-align: center;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.contactus-box {
+    margin-top: 150px;
+    padding: 25px;
+}
+
+.logo-box {
+    margin-top: 100px;
+    padding: 40px;
+}
+
+.contactus-box a {
+    font-size: 20px;
+}
+
+
+footer {
+    height: 95px;
+    margin-top: auto;
+    position: sticky;
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        margin: 0 auto;
+        display: block;
+    }
+
+    .main-logo img {
+        height: 150px;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .contactus-box {
+        margin-top: 70px;
+        padding: 15px;
+    }
+
+    .logo-box {
+        margin-top: 50px;
+        padding: 50px;
+        height: 50px;
+    }
+
+    .contactus-box a {
+        font-size: 15px;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        min-height: 160vh;
+    }
+
+    section {
+        flex: 1;
+        padding-bottom: 60px;
+        min-height: 100vh;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        z-index: 10;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        margin: 0 auto;
+        display: block;
+    }
+
+    .main-logo img {
+        height: 120px;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .contactus-box {
+        margin-top: 70px;
+        padding: 15px;
+    }
+
+    .logo-box {
+        margin-top: 50px;
+        padding: 50px;
+        height: 50px;
+    }
+
+    .contactus-box a {
+        font-size: 15px;
+    }
+
+
+    body {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 60px;
+        min-height: 180vh;
+    }
+
+    section {
+        flex: 1;
+        padding-bottom: 60px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        z-index: 10;
+        height: 110px;
+    }
+}
+>>>>>>> 268fa5d0e56be2cb9e06805325702e6af1b2a4cf
