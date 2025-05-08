@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.ayaseducationalworksheets.com/sitemap.xml
