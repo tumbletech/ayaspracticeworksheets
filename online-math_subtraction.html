@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Subtraction Online | Aya’s Educational Worksheets</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/mainstyle.css" />
+  <link rel="icon" type="image/png" href="assets/img/002.favicon-a.png" />
+
+  <style>
+    .worksheet-card {
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+    .question-row input {
+      max-width: 120px;
+    }
+    .muted-note {
+      font-size: 0.92rem;
+      color: #6c757d;
+    }
+    .stat-pill {
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="./assets/img/001.mainlogo-b.png" alt="AEW Logo" height="90" />
+    </a>
+  </div>
+</nav>
+
+<main class="container my-5">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div>
+      <h1 class="mb-1">Math Online: Subtraction</h1>
+      <div class="muted-note">
+        <strong>Practice Mode Notice:</strong>
+        Worksheet attempts in Practice Mode are not stored by the system.
+        Please take a screenshot after completion if you want a record.
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <span class="stat-pill">Questions: <strong id="qCount">10</strong></span>
+      <span class="stat-pill">Timer: <strong id="timer">00:00</strong></span>
+      <button class="btn btn-outline-secondary" id="btnNew">New Set</button>
+      <a class="btn btn-outline-secondary" href="math-online.html">Back</a>
+    </div>
+  </div>
+
+  <div class="card worksheet-card mt-4">
+    <div class="card-body">
+
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-lg-8">
+          <label class="form-label mb-1">Difficulty</label>
+          <select class="form-select" id="difficulty">
+            <option value="easy">Easy (0–9)</option>
+            <option value="medium" selected>Medium (0–20)</option>
+            <option value="hard">Hard (0–50)</option>
+          </select>
+        </div>
+
+        <div class="col-12 col-lg-4 d-grid">
+          <button class="btn btn-primary" id="btnSubmit">Submit Answers</button>
+        </div>
+      </div>
+
+      <hr class="my-4" />
+
+      <form id="worksheetForm" autocomplete="off">
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Problem</th>
+                <th>Your Answer</th>
+              </tr>
+            </thead>
+            <tbody id="questionsBody"></tbody>
+          </table>
+        </div>
+      </form>
+
+      <div id="resultBox" class="mt-3"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="text-center p-3 mt-5 bg-light">
+  <p>© 2025 Aya's Educational Worksheets</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const DEFAULT_COUNT = 10;
+
+const DIFFICULTY_RANGES = {
+  easy:   { min: 0, max: 9 },
+  medium: { min: 0, max: 20 },
+  hard:   { min: 0, max: 50 }
+};
+
+let questions = [];
+let timerInterval = null;
+let startTimeMs = null;
+let timerRunning = false;
+
+const qCountEl = document.getElementById("qCount");
+const timerEl = document.getElementById("timer");
+const difficultyEl = document.getElementById("difficulty");
+const questionsBodyEl = document.getElementById("questionsBody");
+const resultBoxEl = document.getElementById("resultBox");
+
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function formatTime(ms) {
+  const totalSec = Math.floor(ms / 1000);
+  const mm = String(Math.floor(totalSec / 60)).padStart(2, "0");
+  const ss = String(totalSec % 60).padStart(2, "0");
+  return `${mm}:${ss}`;
+}
+
+function startTimerIfNeeded() {
+  if (timerRunning) return;
+  timerRunning = true;
+  startTimeMs = Date.now();
+  timerInterval = setInterval(() => {
+    timerEl.textContent = formatTime(Date.now() - startTimeMs);
+  }, 250);
+}
+
+function stopTimer() {
+  if (!timerRunning) return 0;
+  timerRunning = false;
+  clearInterval(timerInterval);
+  return Date.now() - startTimeMs;
+}
+
+function resetTimer() {
+  timerRunning = false;
+  clearInterval(timerInterval);
+  timerEl.textContent = "00:00";
+}
+
+function buildQuestions(count) {
+  const diff = difficultyEl.value;
+  const { min, max } = DIFFICULTY_RANGES[diff];
+
+  const out = [];
+
+  for (let i = 0; i < count; i++) {
+    let a = randInt(min, max);
+    let b = randInt(min, max);
+
+    // Ensure no negative answers
+    if (b > a) [a, b] = [b, a];
+
+    out.push({
+      a, b,
+      answer: a - b
+    });
+  }
+
+  return out;
+}
+
+function renderQuestions() {
+  questionsBodyEl.innerHTML = "";
+
+  questions.forEach((q, idx) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td><strong>${q.a}</strong> − <strong>${q.b}</strong> =</td>
+      <td>
+        <input
+          type="number"
+          class="form-control answer-input"
+          id="ans_${idx}"
+          placeholder="Type answer"
+        />
+      </td>
+    `;
+
+    questionsBodyEl.appendChild(tr);
+  });
+
+  document.querySelectorAll(".answer-input").forEach(inp => {
+    inp.addEventListener("input", startTimerIfNeeded, { once: true });
+  });
+}
+
+function newSet() {
+  resetTimer();
+  resultBoxEl.innerHTML = "";
+
+  questions = buildQuestions(DEFAULT_COUNT);
+  renderQuestions();
+}
+
+function grade() {
+  const elapsedMs = stopTimer();
+
+  let correct = 0;
+
+  questions.forEach((q, idx) => {
+    const input = document.getElementById(`ans_${idx}`);
+    const userAns = Number(input.value);
+    const isCorrect = userAns === q.answer;
+
+    if (isCorrect) correct++;
+
+    input.classList.remove("is-valid", "is-invalid");
+    input.classList.add(isCorrect ? "is-valid" : "is-invalid");
+  });
+
+  const total = questions.length;
+  const scorePct = Math.round((correct / total) * 100);
+
+  resultBoxEl.innerHTML = `
+    <div class="alert alert-info">
+      <h4>Result</h4>
+      <p><strong>Score:</strong> ${correct}/${total} (${scorePct}%)</p>
+      <p><strong>Time:</strong> ${formatTime(elapsedMs)}</p>
+      <button class="btn btn-success mt-2" onclick="newSet()">Next Worksheet</button>
+      <div class="mt-2 muted-note">
+        Take a screenshot if you want a copy of this result.
+      </div>
+    </div>
+  `;
+}
+
+document.getElementById("btnSubmit").addEventListener("click", grade);
+document.getElementById("btnNew").addEventListener("click", newSet);
+difficultyEl.addEventListener("change", newSet);
+
+newSet();
+</script>
+
+</body>
+</html>
