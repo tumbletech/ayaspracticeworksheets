@@ -158,4 +158,276 @@
   let timerRunning = false;
 
   // --- ELEMENTS ---
-  const qCountEl = document.getElementBy
+  const qCountEl = document.getElementById("qCount");
+  const timerEl = document.getElementById("timer");
+  const difficultyEl = document.getElementById("difficulty");
+  const avoidRemaindersEl = document.getElementById("avoidRemainders");
+  const questionsBodyEl = document.getElementById("questionsBody");
+  const resultBoxEl = document.getElementById("resultBox");
+  const btnNewEl = document.getElementById("btnNew");
+  const btnSubmitEl = document.getElementById("btnSubmit");
+  const worksheetFormEl = document.getElementById("worksheetForm");
+
+  // --- HELPERS ---
+  function randInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function formatTime(ms) {
+    const totalSec = Math.floor(ms / 1000);
+    const mm = String(Math.floor(totalSec / 60)).padStart(2, "0");
+    const ss = String(totalSec % 60).padStart(2, "0");
+    return `${mm}:${ss}`;
+  }
+
+  function startTimerIfNeeded() {
+    if (timerRunning) return;
+    timerRunning = true;
+    startTimeMs = Date.now();
+    timerEl.textContent = "00:00";
+
+    timerInterval = setInterval(() => {
+      timerEl.textContent = formatTime(Date.now() - startTimeMs);
+    }, 250);
+  }
+
+  function stopTimer() {
+    if (!timerRunning) return 0;
+    timerRunning = false;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    return Date.now() - startTimeMs;
+  }
+
+  function resetTimer() {
+    timerRunning = false;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    startTimeMs = null;
+    timerEl.textContent = "00:00";
+  }
+
+  function clearResults() {
+    resultBoxEl.innerHTML = "";
+  }
+
+  // Build division questions.
+  // If avoidRemainders is ON: dividend = divisor * quotient (clean integer).
+  // If OFF: dividend = divisor * quotient + remainder (remainder > 0 possible),
+  // but we still ask for quotient only (like integer division).
+  function buildQuestions(count) {
+    const diff = difficultyEl.value;
+    const prof = DIFFICULTY_PROFILE[diff];
+    const avoidRemainders = avoidRemaindersEl.checked;
+
+    const out = [];
+
+    for (let i = 0; i < count; i++) {
+      let divisor = randInt(prof.divisorMin, prof.divisorMax);
+
+      // avoid division by zero (just in case)
+      if (divisor === 0) divisor = 1;
+
+      let quotient = randInt(prof.quotientMin, prof.quotientMax);
+
+      // keep problems meaningful: avoid "0 ÷ n" too often (but still allow sometimes)
+      // You can tune this later.
+      if (Math.random() < 0.15) quotient = 0;
+
+      let remainder = 0;
+
+      if (!avoidRemainders) {
+        // pick a remainder less than divisor (could be 0 too, but try to make it non-zero often)
+        remainder = randInt(0, divisor - 1);
+        if (divisor > 1 && remainder === 0 && Math.random() < 0.7) {
+          remainder = randInt(1, divisor - 1);
+        }
+      }
+
+      const dividend = divisor * quotient + remainder;
+
+      out.push({
+        dividend,
+        divisor,
+        // We ask for integer quotient only (floor division)
+        answer: Math.floor(dividend / divisor),
+        remainder
+      });
+    }
+
+    return out;
+  }
+
+  function renderQuestions() {
+    questionsBodyEl.innerHTML = "";
+
+    questions.forEach((q, idx) => {
+      const tr = document.createElement("tr");
+      tr.className = "question-row";
+
+      tr.innerHTML = `
+        <td>${idx + 1}</td>
+        <td><strong>${q.dividend}</strong> ÷ <strong>${q.divisor}</strong> =</td>
+        <td>
+          <input
+            type="number"
+            inputmode="numeric"
+            class="form-control answer-input"
+            id="ans_${idx}"
+            placeholder="Type quotient"
+            aria-label="Answer for question ${idx + 1}"
+          />
+        </td>
+      `;
+
+      questionsBodyEl.appendChild(tr);
+    });
+
+    document.querySelectorAll(".answer-input").forEach(inp => {
+      inp.addEventListener("input", startTimerIfNeeded, { once: true });
+      inp.addEventListener("focus", startTimerIfNeeded, { once: true });
+    });
+  }
+
+  function newSet() {
+    resetTimer();
+    clearResults();
+
+    const count = DEFAULT_COUNT;
+    qCountEl.textContent = String(count);
+
+    questions = buildQuestions(count);
+    renderQuestions();
+
+    const first = document.getElementById("ans_0");
+    if (first) first.focus();
+  }
+
+  function grade() {
+    const elapsedMs = stopTimer();
+
+    let correct = 0;
+    const wrongItems = [];
+
+    questions.forEach((q, idx) => {
+      const input = document.getElementById(`ans_${idx}`);
+      const raw = (input?.value ?? "").trim();
+      const userAns = raw === "" ? null : Number(raw);
+      const isCorrect = userAns === q.answer;
+
+      if (isCorrect) correct++;
+      else wrongItems.push({
+        idx: idx + 1,
+        dividend: q.dividend,
+        divisor: q.divisor,
+        correct: q.answer,
+        user: raw,
+        remainder: q.remainder
+      });
+
+      if (input) {
+        input.classList.remove("is-valid", "is-invalid");
+        input.classList.add(isCorrect ? "is-valid" : "is-invalid");
+      }
+    });
+
+    const total = questions.length;
+    const scorePct = Math.round((correct / total) * 100);
+    const timeStr = formatTime(elapsedMs);
+
+    const passBadge = scorePct >= 80
+      ? `<span class="badge bg-success">Nice work</span>`
+      : `<span class="badge bg-warning text-dark">Keep practicing</span>`;
+
+    const showRemainders = !avoidRemaindersEl.checked;
+
+    let wrongHtml = "";
+    if (wrongItems.length > 0) {
+      wrongHtml = `
+        <div class="mt-3">
+          <h5 class="mb-2">Review</h5>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Problem</th>
+                  <th>Your Answer</th>
+                  <th>Correct Quotient</th>
+                  ${showRemainders ? "<th>Remainder</th>" : ""}
+                </tr>
+              </thead>
+              <tbody>
+                ${wrongItems.map(w => `
+                  <tr>
+                    <td>${w.idx}</td>
+                    <td>${w.dividend} ÷ ${w.divisor}</td>
+                    <td>${w.user === "" ? "—" : w.user}</td>
+                    <td><strong>${w.correct}</strong></td>
+                    ${showRemainders ? `<td>${w.remainder}</td>` : ""}
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+          ${showRemainders ? `<div class="muted-note">Note: This mode asks for the quotient only (whole number division).</div>` : ""}
+        </div>
+      `;
+    }
+
+    resultBoxEl.innerHTML = `
+      <div class="alert alert-info">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <div>
+            <h4 class="mb-1">Result</h4>
+            ${passBadge}
+          </div>
+          <div class="text-end">
+            <div><strong>Score:</strong> ${correct}/${total} (${scorePct}%)</div>
+            <div><strong>Time:</strong> ${timeStr}</div>
+          </div>
+        </div>
+        ${wrongHtml}
+        <div class="mt-3 d-flex flex-wrap gap-2">
+          <button class="btn btn-success" id="btnNext">Next Worksheet</button>
+          <button class="btn btn-outline-secondary" id="btnRetry">Retry Same Set</button>
+        </div>
+        <div class="muted-note mt-2">
+          Tip: Take a screenshot now if you want a record of this attempt.
+        </div>
+      </div>
+    `;
+
+    document.getElementById("btnNext")?.addEventListener("click", () => newSet());
+
+    document.getElementById("btnRetry")?.addEventListener("click", () => {
+      clearResults();
+      resetTimer();
+      document.querySelectorAll(".answer-input").forEach(inp => {
+        inp.value = "";
+        inp.classList.remove("is-valid", "is-invalid");
+      });
+      const first = document.getElementById("ans_0");
+      if (first) first.focus();
+    });
+  }
+
+  // --- EVENTS ---
+  btnNewEl.addEventListener("click", newSet);
+
+  btnSubmitEl.addEventListener("click", (e) => {
+    e.preventDefault();
+    grade();
+    resultBoxEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  worksheetFormEl.addEventListener("submit", (e) => e.preventDefault());
+  difficultyEl.addEventListener("change", newSet);
+  avoidRemaindersEl.addEventListener("change", newSet);
+
+  // --- INIT ---
+  newSet();
+</script>
+
+</body>
+</html>
