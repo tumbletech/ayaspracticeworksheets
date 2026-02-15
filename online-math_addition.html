@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Addition Online | Aya’s Educational Worksheets</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/mainstyle.css" />
+  <link rel="icon" type="image/png" href="assets/img/002.favicon-a.png" />
+
+  <style>
+    .worksheet-card {
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+    .question-row input {
+      max-width: 120px;
+    }
+    .muted-note {
+      font-size: 0.92rem;
+      color: #6c757d;
+    }
+    .stat-pill {
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="./assets/img/001.mainlogo-b.png" alt="AEW Logo" height="90" />
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="a-worksheets.html">Worksheets</a></li>
+          <li class="nav-item"><a class="nav-link active" href="online-worksheets.html">Online Worksheets</a></li>
+          <li class="nav-item"><a class="nav-link" href="b-aboutus.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="stories-notes.html">Stories/Notes</a></li>
+          <li class="nav-item"><a class="nav-link" href="c-support.html">Support Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="e-faqs.html">FAQs</a></li>
+          <li class="nav-item"><a class="nav-link" href="d-contactus.html">Feedback/Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <h1 class="mb-1">Math Online: Addition</h1>
+        <div class="muted-note">
+          <strong>Practice Mode Notice:</strong>
+          Worksheet attempts in Practice Mode are not stored by the system. To keep a copy of your child’s results,
+          please take a screenshot after completing the worksheet.
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <span class="stat-pill">Questions: <strong id="qCount">10</strong></span>
+        <span class="stat-pill">Timer: <strong id="timer">00:00</strong></span>
+        <button class="btn btn-outline-secondary" id="btnNew">New Set</button>
+        <a class="btn btn-outline-secondary" href="math-online.html">Back</a>
+      </div>
+    </div>
+
+    <div class="card worksheet-card mt-4">
+      <div class="card-body">
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-lg-8">
+            <label class="form-label mb-1">Difficulty</label>
+            <select class="form-select" id="difficulty">
+              <option value="easy">Easy (0–9)</option>
+              <option value="medium" selected>Medium (0–20)</option>
+              <option value="hard">Hard (0–50)</option>
+            </select>
+          </div>
+
+          <div class="col-12 col-lg-4 d-grid">
+            <button class="btn btn-primary" id="btnSubmit">Submit Answers</button>
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <form id="worksheetForm" autocomplete="off">
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th style="width: 10%">#</th>
+                  <th style="width: 50%">Problem</th>
+                  <th style="width: 40%">Your Answer</th>
+                </tr>
+              </thead>
+              <tbody id="questionsBody"></tbody>
+            </table>
+          </div>
+        </form>
+
+        <div id="resultBox" class="mt-3"></div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4 muted-note">
+      Tip: Start typing to begin the timer. Submit when done. Take a screenshot of the result if you want a record.
+    </div>
+  </main>
+
+  <footer class="text-center p-3 mt-5 bg-light">
+    <p>© 2025 Aya's Educational Worksheets |
+      <a href="./assets/privatepolicy/AEW - Privacy Policy - April 2025 V1.pdf">Privacy Policy</a> |
+      <a href="./assets/termsofuse/AEW - Terms of Use - April 2025 V1.pdf">Terms of Use</a> |
+      <a href="./d-contactus.html">Contact</a>
+    </p>
+    <p>Designed by Tumbletech</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // --- CONFIG ---
+    const DEFAULT_COUNT = 10;
+
+    const DIFFICULTY_RANGES = {
+      easy:   { min: 0,  max: 9  },
+      medium: { min: 0,  max: 20 },
+      hard:   { min: 0,  max: 50 }
+    };
+
+    // --- STATE ---
+    let questions = [];
+    let timerInterval = null;
+    let startTimeMs = null;
+    let timerRunning = false;
+
+    // --- ELEMENTS ---
+    const qCountEl = document.getElementById("qCount");
+    const timerEl = document.getElementById("timer");
+    const difficultyEl = document.getElementById("difficulty");
+    const questionsBodyEl = document.getElementById("questionsBody");
+    const resultBoxEl = document.getElementById("resultBox");
+    const btnNewEl = document.getElementById("btnNew");
+    const btnSubmitEl = document.getElementById("btnSubmit");
+    const worksheetFormEl = document.getElementById("worksheetForm");
+
+    // --- HELPERS ---
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function formatTime(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const mm = String(Math.floor(totalSec / 60)).padStart(2, "0");
+      const ss = String(totalSec % 60).padStart(2, "0");
+      return `${mm}:${ss}`;
+    }
+
+    function startTimerIfNeeded() {
+      if (timerRunning) return;
+      timerRunning = true;
+      startTimeMs = Date.now();
+      timerEl.textContent = "00:00";
+
+      timerInterval = setInterval(() => {
+        timerEl.textContent = formatTime(Date.now() - startTimeMs);
+      }, 250);
+    }
+
+    function stopTimer() {
+      if (!timerRunning) return 0;
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerInterval = null;
+      const elapsed = Date.now() - startTimeMs;
+      return elapsed;
+    }
+
+    function resetTimer() {
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerInterval = null;
+      startTimeMs = null;
+      timerEl.textContent = "00:00";
+    }
+
+    function clearResults() {
+      resultBoxEl.innerHTML = "";
+    }
+
+    function buildQuestions(count) {
+      const diff = difficultyEl.value;
+      const { min, max } = DIFFICULTY_RANGES[diff];
+
+      const out = [];
+      for (let i = 0; i < count; i++) {
+        const a = randInt(min, max);
+        const b = randInt(min, max);
+        out.push({
+          a, b,
+          answer: a + b
+        });
+      }
+      return out;
+    }
+
+    function renderQuestions() {
+      questionsBodyEl.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = "question-row";
+
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td><strong>${q.a}</strong> + <strong>${q.b}</strong> =</td>
+          <td>
+            <input
+              type="number"
+              inputmode="numeric"
+              class="form-control answer-input"
+              id="ans_${idx}"
+              placeholder="Type answer"
+              aria-label="Answer for question ${idx + 1}"
+            />
+          </td>
+        `;
+
+        questionsBodyEl.appendChild(tr);
+      });
+
+      // Start timer on first interaction
+      document.querySelectorAll(".answer-input").forEach(inp => {
+        inp.addEventListener("input", startTimerIfNeeded, { once: true });
+        inp.addEventListener("focus", startTimerIfNeeded, { once: true });
+      });
+    }
+
+    function newSet() {
+      resetTimer();
+      clearResults();
+
+      const count = DEFAULT_COUNT;
+      qCountEl.textContent = String(count);
+
+      questions = buildQuestions(count);
+      renderQuestions();
+
+      // Focus first input for quick start
+      const first = document.getElementById("ans_0");
+      if (first) first.focus();
+    }
+
+    function grade() {
+      // If user never started typing, still compute time as 0:00
+      const elapsedMs = stopTimer();
+
+      let correct = 0;
+      const wrongItems = [];
+
+      questions.forEach((q, idx) => {
+        const input = document.getElementById(`ans_${idx}`);
+        const raw = (input?.value ?? "").trim();
+
+        // Empty = wrong
+        const userAns = raw === "" ? null : Number(raw);
+        const isCorrect = userAns === q.answer;
+
+        if (isCorrect) correct++;
+        else wrongItems.push({ idx: idx + 1, a: q.a, b: q.b, correct: q.answer, user: raw });
+
+        // Visual feedback
+        if (input) {
+          input.classList.remove("is-valid", "is-invalid");
+          input.classList.add(isCorrect ? "is-valid" : "is-invalid");
+        }
+      });
+
+      const total = questions.length;
+      const scorePct = Math.round((correct / total) * 100);
+      const timeStr = formatTime(elapsedMs);
+
+      const passBadge = scorePct >= 80
+        ? `<span class="badge bg-success">Nice work</span>`
+        : `<span class="badge bg-warning text-dark">Keep practicing</span>`;
+
+      let wrongHtml = "";
+      if (wrongItems.length > 0) {
+        wrongHtml = `
+          <div class="mt-3">
+            <h5 class="mb-2">Review</h5>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Problem</th>
+                    <th>Your Answer</th>
+                    <th>Correct Answer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${wrongItems.map(w => `
+                    <tr>
+                      <td>${w.idx}</td>
+                      <td>${w.a} + ${w.b}</td>
+                      <td>${w.user === "" ? "—" : w.user}</td>
+                      <td><strong>${w.correct}</strong></td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      resultBoxEl.innerHTML = `
+        <div class="alert alert-info">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+              <h4 class="mb-1">Result</h4>
+              ${passBadge}
+            </div>
+            <div class="text-end">
+              <div><strong>Score:</strong> ${correct}/${total} (${scorePct}%)</div>
+              <div><strong>Time:</strong> ${timeStr}</div>
+            </div>
+          </div>
+          ${wrongHtml}
+          <div class="mt-3 d-flex flex-wrap gap-2">
+            <button class="btn btn-success" id="btnNext">Next Worksheet</button>
+            <button class="btn btn-outline-secondary" id="btnRetry">Retry Same Set</button>
+          </div>
+          <div class="muted-note mt-2">
+            Tip: Take a screenshot now if you want a record of this attempt.
+          </div>
+        </div>
+      `;
+
+      // Next = regenerate (changes on its own)
+      document.getElementById("btnNext")?.addEventListener("click", () => newSet());
+
+      // Retry = clear answers, keep same questions
+      document.getElementById("btnRetry")?.addEventListener("click", () => {
+        clearResults();
+        resetTimer();
+        document.querySelectorAll(".answer-input").forEach(inp => {
+          inp.value = "";
+          inp.classList.remove("is-valid", "is-invalid");
+        });
+        const first = document.getElementById("ans_0");
+        if (first) first.focus();
+      });
+    }
+
+    // --- EVENTS ---
+    btnNewEl.addEventListener("click", newSet);
+
+    btnSubmitEl.addEventListener("click", (e) => {
+      e.preventDefault();
+      grade();
+      // Auto-scroll to results
+      resultBoxEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    // Prevent form submit refresh
+    worksheetFormEl.addEventListener("submit", (e) => e.preventDefault());
+
+    // When difficulty changes, generate a new set
+    difficultyEl.addEventListener("change", newSet);
+
+    // --- INIT ---
+    newSet();
+  </script>
+</body>
+</html>
