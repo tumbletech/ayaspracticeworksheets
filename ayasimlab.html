@@ -1,1 +1,383 @@
-1
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aya Sim Lab | Aya’s Educational Worksheets</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Your main site CSS (optional) -->
+  <link rel="stylesheet" href="assets/css/mainstyle.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/002.favicon.png">
+
+  <style>
+    /* Sim Lab-specific styling: minimalist, kid-friendly, mobile-first */
+    .sim-hero {
+      border-radius: 18px;
+      padding: 22px;
+      background: linear-gradient(135deg, rgba(13,110,253,.10), rgba(25,135,84,.10));
+    }
+    .sim-card {
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .sim-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+    }
+    .sim-tag {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.06);
+      display: inline-block;
+    }
+    .sim-status {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      border: 1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.7);
+    }
+    .sim-status.done {
+      border-color: rgba(25,135,84,.25);
+      background: rgba(25,135,84,.08);
+    }
+    .sim-status.locked {
+      border-color: rgba(108,117,125,.25);
+      background: rgba(108,117,125,.08);
+    }
+    .small-muted { color: rgba(0,0,0,.55); }
+    .card-footer {
+      background: rgba(0,0,0,.02);
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar (edit links to match your actual AEW structure) -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">Aya’s Educational Worksheets</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navAEW">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navAEW">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="online-worksheets.html">Online Worksheets</a></li>
+          <li class="nav-item"><a class="nav-link" href="printable-worksheets.html">Printable Worksheets</a></li>
+          <li class="nav-item"><a class="nav-link" href="blogs.html">Blogs</a></li>
+          <li class="nav-item"><a class="nav-link active fw-bold" href="ayasimlab.html">Aya Sim Lab</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-4">
+
+    <!-- Hero -->
+    <section class="sim-hero mb-4">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div>
+          <h1 class="h3 fw-bold mb-1">Aya Sim Lab</h1>
+          <p class="mb-0 small-muted">
+            Interactive learning inside AEW — no printing needed. Tap a sim, play, learn, repeat.
+          </p>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm" id="btnResetProgress" type="button">
+            Reset Progress
+          </button>
+          <button class="btn btn-primary btn-sm" id="btnHowItWorks" type="button" data-bs-toggle="modal" data-bs-target="#howModal">
+            How it works
+          </button>
+        </div>
+      </div>
+
+      <hr class="my-3">
+
+      <div class="row g-3">
+        <div class="col-12 col-md-4">
+          <div class="p-3 bg-white rounded-3 border h-100">
+            <div class="fw-semibold">✅ Quick goal</div>
+            <div class="small-muted">Make concepts visible using simple interactions.</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="p-3 bg-white rounded-3 border h-100">
+            <div class="fw-semibold">📱 Mobile-first</div>
+            <div class="small-muted">Designed to work smoothly on phones and tablets.</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="p-3 bg-white rounded-3 border h-100">
+            <div class="fw-semibold">🧠 Gentle learning</div>
+            <div class="small-muted">Trial-and-error is allowed. No pressure.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sections -->
+    <section class="mb-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h2 class="h5 fw-bold mb-0">Math Sims</h2>
+        <span class="sim-tag">Start here</span>
+      </div>
+
+      <div class="row g-3">
+        <!-- Number Line Lab -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card sim-card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <div>
+                  <h3 class="h6 fw-bold mb-1">Number Line Lab</h3>
+                  <div class="small-muted mb-2">See addition and subtraction as jumps on a number line.</div>
+                </div>
+                <span class="sim-status" data-sim="math-numberline">
+                  <span aria-hidden="true">⏳</span> Not done
+                </span>
+              </div>
+
+              <ul class="small-muted mb-0 ps-3">
+                <li>Drag to move</li>
+                <li>Forward = add, backward = subtract</li>
+                <li>Instant visual feedback</li>
+              </ul>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <span class="small-muted mono">SIM: math-numberline</span>
+              <a class="btn btn-sm btn-primary" href="sim-numberline.html">Open</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Array Builder -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card sim-card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <div>
+                  <h3 class="h6 fw-bold mb-1">Array Builder</h3>
+                  <div class="small-muted mb-2">Build rows and columns to understand multiplication.</div>
+                </div>
+                <span class="sim-status locked" title="Coming soon">
+                  <span aria-hidden="true">🔒</span> Coming soon
+                </span>
+              </div>
+
+              <ul class="small-muted mb-0 ps-3">
+                <li>Rows × Columns</li>
+                <li>Count visually</li>
+                <li>Better than pure memorization</li>
+              </ul>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <span class="small-muted mono">SIM: math-array</span>
+              <button class="btn btn-sm btn-outline-secondary" type="button" disabled>Locked</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Place Value -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card sim-card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <div>
+                  <h3 class="h6 fw-bold mb-1">Place Value Blocks</h3>
+                  <div class="small-muted mb-2">Hundreds, tens, ones — drag blocks and see the number.</div>
+                </div>
+                <span class="sim-status locked" title="Coming soon">
+                  <span aria-hidden="true">🔒</span> Coming soon
+                </span>
+              </div>
+
+              <ul class="small-muted mb-0 ps-3">
+                <li>Drag blocks</li>
+                <li>Instant number update</li>
+                <li>Build number sense</li>
+              </ul>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <span class="small-muted mono">SIM: math-placevalue</span>
+              <button class="btn btn-sm btn-outline-secondary" type="button" disabled>Locked</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="mb-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h2 class="h5 fw-bold mb-0">Science Sims</h2>
+        <span class="sim-tag">Beta</span>
+      </div>
+
+      <div class="row g-3">
+        <!-- Push & Pull -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card sim-card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <div>
+                  <h3 class="h6 fw-bold mb-1">Push & Pull</h3>
+                  <div class="small-muted mb-2">Cause and effect: stronger push = farther movement.</div>
+                </div>
+                <span class="sim-status locked" title="Coming soon">
+                  <span aria-hidden="true">🔒</span> Coming soon
+                </span>
+              </div>
+
+              <ul class="small-muted mb-0 ps-3">
+                <li>Drag a slider for “force”</li>
+                <li>Watch the object move</li>
+                <li>No formulas needed</li>
+              </ul>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <span class="small-muted mono">SIM: sci-pushpull</span>
+              <button class="btn btn-sm btn-outline-secondary" type="button" disabled>Locked</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sink or Float -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card sim-card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <div>
+                  <h3 class="h6 fw-bold mb-1">Sink or Float</h3>
+                  <div class="small-muted mb-2">Predict then test: does it sink or float?</div>
+                </div>
+                <span class="sim-status locked" title="Coming soon">
+                  <span aria-hidden="true">🔒</span> Coming soon
+                </span>
+              </div>
+
+              <ul class="small-muted mb-0 ps-3">
+                <li>Tap an object</li>
+                <li>Make a prediction</li>
+                <li>See the result instantly</li>
+              </ul>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <span class="small-muted mono">SIM: sci-sinkfloat</span>
+              <button class="btn btn-sm btn-outline-secondary" type="button" disabled>Locked</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Footer note -->
+    <section class="text-center small-muted mt-4">
+      <div class="py-3 border-top">
+        Built for learning — not for noise. 🙂<br>
+        <span class="mono">Progress is stored locally on this device.</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- How it works modal -->
+  <div class="modal fade" id="howModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius: 16px;">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">How Aya Sim Lab works</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body small">
+          <ul class="mb-0">
+            <li>Pick a sim (example: <b>Number Line Lab</b>).</li>
+            <li>Play with it first — learning comes from seeing and trying.</li>
+            <li>Some sims may have questions at the bottom later.</li>
+            <li>When a sim is completed, we mark it as <b>Done</b> on this page.</li>
+          </ul>
+          <hr>
+          <div class="small-muted">
+            Tech note: we use <span class="mono">localStorage</span> to track completed sims on this device only.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-bs-dismiss="modal" type="button">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /**
+     * Aya Sim Lab Progress System (localStorage)
+     * - Each sim can set: localStorage.setItem("sim_done_<SIM_ID>", "1")
+     * - This page reads and displays Done/Not done.
+     *
+     * Example sim id: "math-numberline"
+     * Storage key: "sim_done_math-numberline"
+     */
+
+    function isDone(simId) {
+      return localStorage.getItem("sim_done_" + simId) === "1";
+    }
+
+    function renderStatuses() {
+      const statusEls = document.querySelectorAll(".sim-status[data-sim]");
+      statusEls.forEach(el => {
+        const simId = el.getAttribute("data-sim");
+        if (isDone(simId)) {
+          el.classList.add("done");
+          el.innerHTML = '<span aria-hidden="true">✅</span> Done';
+        } else {
+          el.classList.remove("done");
+          el.innerHTML = '<span aria-hidden="true">⏳</span> Not done';
+        }
+      });
+    }
+
+    function resetProgress() {
+      // Remove only sim keys so you don’t wipe other AEW stuff.
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith("sim_done_")) keysToRemove.push(key);
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+      renderStatuses();
+    }
+
+    document.getElementById("btnResetProgress").addEventListener("click", () => {
+      const ok = confirm("Reset Aya Sim Lab progress on this device?");
+      if (ok) resetProgress();
+    });
+
+    // Initial render
+    renderStatuses();
+
+    // OPTIONAL: quick developer shortcut (uncomment to test Done badge)
+    // localStorage.setItem("sim_done_math-numberline", "1"); renderStatuses();
+  </script>
+</body>
+</html>
