@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Number Line Lab | Aya Sim Lab</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Your main site CSS (optional) -->
+  <link rel="stylesheet" href="assets/css/mainstyle.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/002.favicon.png">
+
+  <style>
+    .lab-wrap {
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(13,110,253,.10), rgba(255,193,7,.10));
+      padding: 18px;
+    }
+    .panel {
+      border-radius: 16px;
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .numline {
+      width: 100%;
+      height: 140px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(0,0,0,.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .tick {
+      position: absolute;
+      bottom: 36px;
+      width: 1px;
+      height: 16px;
+      background: rgba(0,0,0,.25);
+    }
+    .tick-label {
+      position: absolute;
+      bottom: 10px;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: rgba(0,0,0,.65);
+    }
+    .line {
+      position: absolute;
+      bottom: 44px;
+      left: 12px;
+      right: 12px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.12);
+    }
+    .dot {
+      position: absolute;
+      bottom: 50px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(13,110,253,1);
+      box-shadow: 0 6px 14px rgba(0,0,0,.15);
+      transform: translateX(-50%);
+      transition: left .25s ease;
+    }
+    .jump-badge {
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(0,0,0,.06);
+      display: inline-block;
+    }
+    .small-muted { color: rgba(0,0,0,.55); }
+    .result {
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.7);
+      padding: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar (simple, kid-focused) -->
+  <nav class="navbar navbar-light bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="ayasimlab.html">← Aya Sim Lab</a>
+      <span class="small-muted">Math • Number Line</span>
+    </div>
+  </nav>
+
+  <main class="container my-4">
+
+    <section class="lab-wrap mb-3">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+        <div>
+          <h1 class="h4 fw-bold mb-1">Number Line Lab</h1>
+          <div class="small-muted">Addition = jump forward. Subtraction = jump backward.</div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm" id="btnReset" type="button">Reset</button>
+          <button class="btn btn-primary btn-sm" id="btnMarkDone" type="button">Mark Done</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="row g-3">
+
+      <!-- Interactive Panel -->
+      <div class="col-12 col-lg-7">
+        <div class="card panel">
+          <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="fw-semibold">Play Area</div>
+              <span class="jump-badge">Range: <span class="mono" id="rangeLabel">-10 to +10</span></span>
+            </div>
+
+            <div class="numline mb-3" id="numline">
+              <div class="line"></div>
+              <div class="dot" id="dot" style="left: 50%;"></div>
+              <!-- ticks inserted by JS -->
+            </div>
+
+            <div class="result mb-3">
+              <div class="d-flex flex-wrap gap-3">
+                <div>
+                  <div class="small-muted">Current number</div>
+                  <div class="h3 fw-bold mb-0 mono" id="currentValue">0</div>
+                </div>
+                <div>
+                  <div class="small-muted">Step size</div>
+                  <div class="h3 fw-bold mb-0 mono" id="stepValue">1</div>
+                </div>
+                <div class="ms-auto">
+                  <div class="small-muted">Total jumps</div>
+                  <div class="h3 fw-bold mb-0 mono" id="jumpCount">0</div>
+                </div>
+              </div>
+              <div class="small-muted mt-2">
+                Tip: change step size, then press <b>Jump +</b> or <b>Jump −</b>.
+              </div>
+            </div>
+
+            <label for="stepSlider" class="form-label fw-semibold mb-1">Choose step size</label>
+            <input type="range" class="form-range" id="stepSlider" min="1" max="10" value="1">
+
+            <div class="d-grid d-sm-flex gap-2 mt-2">
+              <button class="btn btn-success flex-fill" id="btnPlus" type="button">Jump +</button>
+              <button class="btn btn-warning flex-fill" id="btnMinus" type="button">Jump −</button>
+            </div>
+
+            <div class="small-muted mt-3">
+              Goal: reach <b class="mono" id="targetLabel">+7</b> using jumps.
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructions + Questions -->
+      <div class="col-12 col-lg-5">
+        <div class="card panel">
+          <div class="card-body">
+
+            <div class="fw-semibold mb-2">Mini Challenge</div>
+            <div class="small-muted mb-3">
+              Try to reach the target number using jumps. Then answer the questions.
+            </div>
+
+            <div class="p-3 rounded-3 border bg-white mb-3">
+              <div class="small-muted">Target number</div>
+              <div class="h2 fw-bold mb-0 mono" id="targetValue">+7</div>
+            </div>
+
+            <form id="quizForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">1) What is your final number?</label>
+                <input type="number" class="form-control" id="q1" placeholder="Type your final number">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">2) What step size did you use most?</label>
+                <select class="form-select" id="q2">
+                  <option value="">Select</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                  <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                </select>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label fw-semibold">3) Did you use more addition or subtraction jumps?</label>
+                <select class="form-select" id="q3">
+                  <option value="">Select</option>
+                  <option value="addition">More addition</option>
+                  <option value="subtraction">More subtraction</option>
+                  <option value="equal">Equal</option>
+                </select>
+              </div>
+
+              <!-- SUBMIT UNDER QUESTIONS (parent feedback) -->
+              <div class="d-grid mt-3">
+                <button class="btn btn-primary" type="submit" id="btnSubmit">Submit Answers</button>
+              </div>
+            </form>
+
+            <div class="alert alert-info mt-3 mb-0 d-none" id="feedbackBox"></div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center small-muted mt-4">
+      Progress is stored locally on this device.
+    </div>
+
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ====== Config ======
+    const SIM_ID = "math-numberline";
+    const MIN = -10;
+    const MAX = 10;
+
+    // Target: random-ish but stable per refresh (feel free to hardcode)
+    let target = 7;
+
+    // ====== State ======
+    let current = 0;
+    let step = 1;
+    let jumps = 0;
+    let plusCount = 0;
+    let minusCount = 0;
+
+    // ====== Elements ======
+    const dot = document.getElementById("dot");
+    const numline = document.getElementById("numline");
+
+    const currentValueEl = document.getElementById("currentValue");
+    const stepValueEl = document.getElementById("stepValue");
+    const jumpCountEl = document.getElementById("jumpCount");
+
+    const stepSlider = document.getElementById("stepSlider");
+
+    const targetLabelEl = document.getElementById("targetLabel");
+    const targetValueEl = document.getElementById("targetValue");
+
+    const feedbackBox = document.getElementById("feedbackBox");
+
+    // ====== Helpers ======
+    function clamp(n, min, max) {
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function toPercent(value) {
+      // Map [MIN..MAX] to [12..(100-12)] for padding
+      const leftPad = 12;
+      const rightPad = 12;
+      const ratio = (value - MIN) / (MAX - MIN);
+      return leftPad + ratio * (100 - leftPad - rightPad);
+    }
+
+    function render() {
+      currentValueEl.textContent = current;
+      stepValueEl.textContent = step;
+      jumpCountEl.textContent = jumps;
+
+      dot.style.left = toPercent(current) + "%";
+
+      targetLabelEl.textContent = (target >= 0 ? "+" : "") + target;
+      targetValueEl.textContent = (target >= 0 ? "+" : "") + target;
+
+      // tiny "win" feedback when hit target
+      if (current === target) {
+        dot.style.background = "rgba(25,135,84,1)"; // success green
+      } else {
+        dot.style.background = "rgba(13,110,253,1)"; // primary blue
+      }
+    }
+
+    function buildTicks() {
+      // Clean any existing ticks (except line/dot)
+      const existing = numline.querySelectorAll(".tick, .tick-label");
+      existing.forEach(e => e.remove());
+
+      for (let v = MIN; v <= MAX; v++) {
+        const x = toPercent(v);
+
+        const t = document.createElement("div");
+        t.className = "tick";
+        t.style.left = x + "%";
+        numline.appendChild(t);
+
+        // label every 2 for readability
+        if (v % 2 === 0) {
+          const lab = document.createElement("div");
+          lab.className = "tick-label mono";
+          lab.style.left = x + "%";
+          lab.textContent = v;
+          numline.appendChild(lab);
+        }
+      }
+    }
+
+    function resetAll() {
+      current = 0;
+      step = 1;
+      jumps = 0;
+      plusCount = 0;
+      minusCount = 0;
+      stepSlider.value = "1";
+      feedbackBox.classList.add("d-none");
+      feedbackBox.textContent = "";
+      render();
+    }
+
+    function markDone() {
+      localStorage.setItem("sim_done_" + SIM_ID, "1");
+    }
+
+    // ====== Events ======
+    stepSlider.addEventListener("input", (e) => {
+      step = Number(e.target.value) || 1;
+      render();
+    });
+
+    document.getElementById("btnPlus").addEventListener("click", () => {
+      current = clamp(current + step, MIN, MAX);
+      jumps++;
+      plusCount++;
+      render();
+    });
+
+    document.getElementById("btnMinus").addEventListener("click", () => {
+      current = clamp(current - step, MIN, MAX);
+      jumps++;
+      minusCount++;
+      render();
+    });
+
+    document.getElementById("btnReset").addEventListener("click", () => {
+      resetAll();
+    });
+
+    document.getElementById("btnMarkDone").addEventListener("click", () => {
+      markDone();
+      feedbackBox.classList.remove("d-none");
+      feedbackBox.classList.remove("alert-danger");
+      feedbackBox.classList.add("alert-info");
+      feedbackBox.innerHTML = "✅ Marked as <b>Done</b>. Go back to Aya Sim Lab to see the badge.";
+    });
+
+    // Quiz submit
+    document.getElementById("quizForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const q1 = document.getElementById("q1").value.trim();
+      const q2 = document.getElementById("q2").value.trim();
+      const q3 = document.getElementById("q3").value.trim();
+
+      // Decide if "more addition/subtraction/equal" matches actual behavior
+      let expected = "equal";
+      if (plusCount > minusCount) expected = "addition";
+      if (minusCount > plusCount) expected = "subtraction";
+
+      const errors = [];
+
+      // Q1: must match current
+      if (q1 === "" || Number(q1) !== current) {
+        errors.push("Q1 should match your current number.");
+      }
+
+      // Q2: must be selected
+      if (q2 === "") {
+        errors.push("Q2: pick a step size.");
+      }
+
+      // Q3: must be selected and ideally match expected
+      if (q3 === "") {
+        errors.push("Q3: pick one option.");
+      } else if (q3 !== expected) {
+        // not a hard fail, but we’ll nudge
+      }
+
+      // Feedback
+      feedbackBox.classList.remove("d-none");
+
+      if (errors.length > 0) {
+        feedbackBox.classList.remove("alert-info");
+        feedbackBox.classList.add("alert-danger");
+        feedbackBox.innerHTML = "❌ Not yet. Fix these:<br><ul class='mb-0'>" +
+          errors.map(x => "<li>" + x + "</li>").join("") +
+          "</ul>";
+        return;
+      }
+
+      // Success
+      const hitTarget = (current === target);
+      markDone();
+
+      feedbackBox.classList.remove("alert-danger");
+      feedbackBox.classList.add("alert-info");
+
+      const behaviorNote = (q3 === expected)
+        ? "Nice — your jump choice matches your actions."
+        : "Your answer in Q3 doesn’t match your actions — but that’s okay. Recheck your jumps.";
+
+      feedbackBox.innerHTML =
+        "✅ Submitted! " + (hitTarget ? "You reached the target. " : "Try reaching the target next time. ") +
+        "<br>" + behaviorNote +
+        "<br><br><b>Saved:</b> This sim is now marked as Done on this device.";
+
+      // Optional: auto-scroll feedback into view on small screens
+      feedbackBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    // ====== Init ======
+    document.getElementById("rangeLabel").textContent = `${MIN} to ${MAX}`;
+    buildTicks();
+    render();
+  </script>
+
+</body>
+</html>
