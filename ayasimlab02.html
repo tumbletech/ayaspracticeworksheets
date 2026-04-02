@@ -1,476 +1,663 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aya Sim Lab - Color Mixing</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #fdf6ff, #eaf7ff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 1100px;
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-      text-align: center;
-    }
-
-    h1 {
-      margin-top: 0;
-      font-size: 2rem;
-      color: #333;
-    }
-
-    .subtitle {
-      color: #666;
-      margin-bottom: 24px;
-      font-size: 1rem;
-    }
-
-    .color-buttons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-      gap: 16px;
-      max-width: 700px;
-      margin: 0 auto 24px auto;
-    }
-
-    .color-option {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .color-btn {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-      position: relative;
-    }
-
-    .color-btn:hover {
-      transform: scale(1.08);
-    }
-
-    .color-btn.selected {
-      outline: 5px solid #333;
-      outline-offset: 4px;
-    }
-
-    .color-label {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      color: #444;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .mix-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .bowl {
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      border: 10px solid #ddd;
-      background: #fafafa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #444;
-      transition: background 0.3s ease, color 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .result-text {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #333;
-      min-height: 32px;
-    }
-
-    .selected-colors {
-      margin-top: 8px;
-      color: #555;
-      font-size: 1rem;
-      min-height: 24px;
-    }
-
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    button.action-btn {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-      background: #4f8cff;
-      color: white;
-      transition: background 0.2s ease;
-    }
-
-    button.action-btn:hover {
-      background: #3b73db;
-    }
-
-    button.reset-btn {
-      background: #ff7b7b;
-    }
-
-    button.reset-btn:hover {
-      background: #e25f5f;
-    }
-
-    .sparkle {
-      position: absolute;
-      font-size: 2rem;
-      animation: pop 0.7s ease forwards;
-      opacity: 0;
-    }
-
-    @keyframes pop {
-      0% {
-        transform: scale(0.3) translateY(10px);
-        opacity: 0;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aya Sim Lab - Color Mixing</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
       }
-      50% {
-        transform: scale(1.2) translateY(-10px);
-        opacity: 1;
+  
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #fdf6ff, #eaf7ff);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
       }
-      100% {
-        transform: scale(1) translateY(-20px);
-        opacity: 0;
+  
+      .app {
+        width: 100%;
+        max-width: 1100px;
+        background: #fff;
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        text-align: center;
       }
-    }
-
-    @media (max-width: 600px) {
+  
       h1 {
-        font-size: 1.6rem;
+        margin: 0 0 10px;
+        font-size: 2rem;
+        color: #333;
       }
-
-      .color-btn {
-        width: 75px;
-        height: 75px;
-      }
-
-      .bowl {
-        width: 180px;
-        height: 180px;
+  
+      .subtitle {
+        color: #666;
+        margin-bottom: 24px;
         font-size: 1rem;
       }
-
+  
+      .level-selector {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+  
+      .level-btn {
+        border: none;
+        border-radius: 14px;
+        padding: 12px 18px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        background: #ececec;
+        color: #333;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+  
+      .level-btn:hover {
+        transform: translateY(-2px);
+        background: #dddddd;
+      }
+  
+      .level-btn.active {
+        background: #4f8cff;
+        color: #fff;
+      }
+  
+      .level-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+      }
+  
+      .level-desc {
+        font-size: 0.98rem;
+        color: #666;
+        margin-bottom: 22px;
+        min-height: 24px;
+      }
+  
+      .lab-layout {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 24px;
+        align-items: start;
+      }
+  
+      .color-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 16px;
+        max-width: 780px;
+        margin: 0 auto;
+      }
+  
+      .color-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+  
+      .color-btn {
+        width: 90px;
+        height: 90px;
+        border: none;
+        border-radius: 50%;
+        cursor: grab;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        touch-action: none;
+        user-select: none;
+      }
+  
+      .color-btn:hover {
+        transform: scale(1.08);
+      }
+  
+      .color-btn:active {
+        cursor: grabbing;
+        transform: scale(1.06);
+      }
+  
+      .color-btn.used {
+        opacity: 0.45;
+        outline: 4px solid #333;
+        outline-offset: 3px;
+      }
+  
       .color-label {
-        font-size: 0.8rem;
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: #444;
+        font-weight: bold;
+        text-align: center;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="app">
-    <h1>🎨 Color Mixing Lab</h1>
-    <p class="subtitle">Pick 2 colors, then mix them!</p>
-
-    <div class="color-buttons">
-      <!-- Primary Colors -->
-      <div class="color-option">
-        <button class="color-btn" data-color="red" style="background: red;" aria-label="Red"></button>
-        <div class="color-label">Red</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="yellow" style="background: yellow;" aria-label="Yellow"></button>
-        <div class="color-label">Yellow</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="blue" style="background: blue;" aria-label="Blue"></button>
-        <div class="color-label">Blue</div>
-      </div>
-
-      <!-- Secondary Colors -->
-      <div class="color-option">
-        <button class="color-btn" data-color="orange" style="background: orange;" aria-label="Orange"></button>
-        <div class="color-label">Orange</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="green" style="background: green;" aria-label="Green"></button>
-        <div class="color-label">Green</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="purple" style="background: purple;" aria-label="Purple"></button>
-        <div class="color-label">Purple</div>
-      </div>
-
-      <!-- Tertiary Colors -->
-      <div class="color-option">
-        <button class="color-btn" data-color="red-orange" style="background: #ff5349;" aria-label="Red-Orange"></button>
-        <div class="color-label">Red-Orange</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="yellow-orange" style="background: #ffae42;" aria-label="Yellow-Orange"></button>
-        <div class="color-label">Yellow-Orange</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="yellow-green" style="background: #9acd32;" aria-label="Yellow-Green"></button>
-        <div class="color-label">Yellow-Green</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="blue-green" style="background: #0d98ba;" aria-label="Blue-Green"></button>
-        <div class="color-label">Blue-Green</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="blue-purple" style="background: #6a5acd;" aria-label="Blue-Purple"></button>
-        <div class="color-label">Blue-Purple</div>
-      </div>
-
-      <div class="color-option">
-        <button class="color-btn" data-color="red-purple" style="background: #c71585;" aria-label="Red-Purple"></button>
-        <div class="color-label">Red-Purple</div>
-      </div>
-    </div>
-
-    <div class="mix-area">
-      <div class="bowl" id="bowl">Mix Here</div>
-      <div class="result-text" id="resultText"></div>
-      <div class="selected-colors" id="selectedColors">Selected: none</div>
-    </div>
-
-    <div class="controls">
-      <button class="action-btn" id="mixBtn">Mix Colors</button>
-      <button class="action-btn reset-btn" id="resetBtn">Reset</button>
-    </div>
-  </div>
-
-  <script>
-    const colorButtons = document.querySelectorAll(".color-btn");
-    const selectedColorsText = document.getElementById("selectedColors");
-    const resultText = document.getElementById("resultText");
-    const bowl = document.getElementById("bowl");
-    const mixBtn = document.getElementById("mixBtn");
-    const resetBtn = document.getElementById("resetBtn");
-
-    let selectedColors = [];
-
-    const colorDisplayNames = {
-      red: "Red",
-      yellow: "Yellow",
-      blue: "Blue",
-      orange: "Orange",
-      green: "Green",
-      purple: "Purple",
-      "red-orange": "Red-Orange",
-      "yellow-orange": "Yellow-Orange",
-      "yellow-green": "Yellow-Green",
-      "blue-green": "Blue-Green",
-      "blue-purple": "Blue-Purple",
-      "red-purple": "Red-Purple",
-      brown: "Brown"
-    };
-
-    const mixMap = {
-      // Primary + Primary
-      "red-yellow": { name: "Orange", color: "orange", textColor: "#222" },
-      "yellow-red": { name: "Orange", color: "orange", textColor: "#222" },
-
-      "red-blue": { name: "Purple", color: "purple", textColor: "#fff" },
-      "blue-red": { name: "Purple", color: "purple", textColor: "#fff" },
-
-      "blue-yellow": { name: "Green", color: "green", textColor: "#fff" },
-      "yellow-blue": { name: "Green", color: "green", textColor: "#fff" },
-
-      // Same colors
-      "red-red": { name: "Red", color: "red", textColor: "#fff" },
-      "yellow-yellow": { name: "Yellow", color: "yellow", textColor: "#222" },
-      "blue-blue": { name: "Blue", color: "blue", textColor: "#fff" },
-      "orange-orange": { name: "Orange", color: "orange", textColor: "#222" },
-      "green-green": { name: "Green", color: "green", textColor: "#fff" },
-      "purple-purple": { name: "Purple", color: "purple", textColor: "#fff" },
-
-      // Primary + Secondary
-      "red-orange": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
-      "orange-red": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
-
-      "yellow-orange": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
-      "orange-yellow": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
-
-      "yellow-green": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
-      "green-yellow": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
-
-      "blue-green": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
-      "green-blue": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
-
-      "blue-purple": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
-      "purple-blue": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
-
-      "red-purple": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
-      "purple-red": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
-
-      // Secondary + Secondary
-      "orange-green": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
-      "green-orange": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
-
-      "orange-purple": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
-      "purple-orange": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
-
-      "green-purple": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
-      "purple-green": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
-
-      // Tertiary + Same
-      "red-orange-red-orange": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
-      "yellow-orange-yellow-orange": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
-      "yellow-green-yellow-green": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
-      "blue-green-blue-green": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
-      "blue-purple-blue-purple": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
-      "red-purple-red-purple": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
-
-      // Neighboring tertiary colors
-      "red-orange-yellow-orange": { name: "Orange", color: "orange", textColor: "#222" },
-      "yellow-orange-red-orange": { name: "Orange", color: "orange", textColor: "#222" },
-
-      "yellow-orange-yellow-green": { name: "Yellow", color: "yellow", textColor: "#222" },
-      "yellow-green-yellow-orange": { name: "Yellow", color: "yellow", textColor: "#222" },
-
-      "yellow-green-blue-green": { name: "Green", color: "green", textColor: "#fff" },
-      "blue-green-yellow-green": { name: "Green", color: "green", textColor: "#fff" },
-
-      "blue-green-blue-purple": { name: "Blue", color: "blue", textColor: "#fff" },
-      "blue-purple-blue-green": { name: "Blue", color: "blue", textColor: "#fff" },
-
-      "blue-purple-red-purple": { name: "Purple", color: "purple", textColor: "#fff" },
-      "red-purple-blue-purple": { name: "Purple", color: "purple", textColor: "#fff" },
-
-      "red-purple-red-orange": { name: "Red", color: "red", textColor: "#fff" },
-      "red-orange-red-purple": { name: "Red", color: "red", textColor: "#fff" },
-
-      // Opposite tertiary colors
-      "red-orange-blue-green": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
-      "blue-green-red-orange": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
-
-      "yellow-orange-blue-purple": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
-      "blue-purple-yellow-orange": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
-
-      "yellow-green-red-purple": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
-      "red-purple-yellow-green": { name: "Brown", color: "#8b5a2b", textColor: "#fff" }
-    };
-
-    function updateSelectedDisplay() {
-      if (selectedColors.length === 0) {
-        selectedColorsText.textContent = "Selected: none";
-      } else {
-        const names = selectedColors.map(color => colorDisplayNames[color] || color);
-        selectedColorsText.textContent = "Selected: " + names.join(" + ");
+  
+      .mix-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
       }
-    }
-
-    function clearSelections() {
-      selectedColors = [];
-      colorButtons.forEach(btn => btn.classList.remove("selected"));
-      updateSelectedDisplay();
-    }
-
-    function showSparkle() {
-      const sparkle = document.createElement("div");
-      sparkle.className = "sparkle";
-      sparkle.textContent = "✨";
-      sparkle.style.left = "50%";
-      sparkle.style.top = "50%";
-      sparkle.style.transform = "translate(-50%, -50%)";
-      bowl.appendChild(sparkle);
-
-      setTimeout(() => {
-        sparkle.remove();
-      }, 700);
-    }
-
-    colorButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        const color = button.dataset.color;
-
-        if (selectedColors.length >= 2) {
-          alert("You can only pick 2 colors.");
-          return;
+  
+      .bowl {
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        border: 10px dashed #cfcfcf;
+        background: #fafafa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #444;
+        position: relative;
+        overflow: hidden;
+        transition: background 0.3s ease, color 0.3s ease, border-color 0.2s ease, transform 0.2s ease;
+      }
+  
+      .bowl.drag-over {
+        border-color: #4f8cff;
+        transform: scale(1.03);
+        background: #f3f8ff;
+      }
+  
+      .result-text {
+        min-height: 32px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #333;
+      }
+  
+      .selected-colors {
+        min-height: 24px;
+        font-size: 1rem;
+        color: #555;
+      }
+  
+      .drop-help {
+        font-size: 0.95rem;
+        color: #777;
+        max-width: 240px;
+        line-height: 1.4;
+      }
+  
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 8px;
+      }
+  
+      .action-btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        background: #4f8cff;
+        transition: background 0.2s ease;
+      }
+  
+      .action-btn:hover {
+        background: #3b73db;
+      }
+  
+      .reset-btn {
+        background: #ff7b7b;
+      }
+  
+      .reset-btn:hover {
+        background: #e25f5f;
+      }
+  
+      .sparkle {
+        position: absolute;
+        font-size: 2rem;
+        animation: pop 0.7s ease forwards;
+        opacity: 0;
+        pointer-events: none;
+      }
+  
+      .drop-chip-wrap {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        min-height: 28px;
+      }
+  
+      .drop-chip {
+        padding: 6px 10px;
+        border-radius: 999px;
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+      }
+  
+      @keyframes pop {
+        0% {
+          transform: scale(0.3) translateY(10px);
+          opacity: 0;
         }
-
-        selectedColors.push(color);
-        button.classList.add("selected");
-        updateSelectedDisplay();
-      });
-    });
-
-    mixBtn.addEventListener("click", () => {
-      if (selectedColors.length !== 2) {
-        resultText.textContent = "Please pick 2 colors first.";
-        return;
+        50% {
+          transform: scale(1.2) translateY(-10px);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1) translateY(-20px);
+          opacity: 0;
+        }
       }
-
-      const key = `${selectedColors[0]}-${selectedColors[1]}`;
-      const result = mixMap[key];
-
-      if (result) {
-        bowl.style.background = result.color;
-        bowl.style.color = result.textColor || "#222";
-        bowl.textContent = result.name;
-        resultText.textContent = `You made ${result.name}!`;
-        showSparkle();
-      } else {
+  
+      @media (max-width: 860px) {
+        .lab-layout {
+          grid-template-columns: 1fr;
+        }
+  
+        .mix-panel {
+          margin-top: 8px;
+        }
+      }
+  
+      @media (max-width: 600px) {
+        .app {
+          padding: 18px;
+        }
+  
+        h1 {
+          font-size: 1.6rem;
+        }
+  
+        .color-btn {
+          width: 75px;
+          height: 75px;
+        }
+  
+        .bowl {
+          width: 180px;
+          height: 180px;
+          font-size: 1rem;
+        }
+  
+        .color-label {
+          font-size: 0.8rem;
+        }
+  
+        .level-btn {
+          width: 100%;
+          max-width: 260px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <h1>🎨 Aya Sim Lab - Color Mixing</h1>
+      <p class="subtitle">Drag 2 colors into the bowl and watch them mix.</p>
+  
+      <div class="level-selector">
+        <button class="level-btn active" data-level="1">Level 1: Basic Colors</button>
+        <button class="level-btn" data-level="2">Level 2: Color Builder</button>
+        <button class="level-btn" data-level="3">Level 3: Color Master</button>
+      </div>
+  
+      <div class="level-title" id="levelTitle">Level 1: Basic Colors</div>
+      <div class="level-desc" id="levelDesc">Learn how primary colors make secondary colors.</div>
+  
+      <div class="lab-layout">
+        <div class="color-buttons" id="colorButtons"></div>
+  
+        <div class="mix-panel">
+          <div class="bowl" id="bowl">Mix Here</div>
+          <div class="drop-chip-wrap" id="dropChips"></div>
+          <div class="result-text" id="resultText"></div>
+          <div class="selected-colors" id="selectedColors">Dropped: none</div>
+          <div class="drop-help">Drag any 2 colors into the bowl. After the second drop, the mix happens automatically.</div>
+  
+          <div class="controls">
+            <button class="action-btn reset-btn" id="resetBtn">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <script>
+      const colorButtonsContainer = document.getElementById("colorButtons");
+      const selectedColorsText = document.getElementById("selectedColors");
+      const resultText = document.getElementById("resultText");
+      const bowl = document.getElementById("bowl");
+      const resetBtn = document.getElementById("resetBtn");
+      const levelButtons = document.querySelectorAll(".level-btn");
+      const levelTitle = document.getElementById("levelTitle");
+      const levelDesc = document.getElementById("levelDesc");
+      const dropChips = document.getElementById("dropChips");
+  
+      let currentLevel = 1;
+      let droppedColors = [];
+  
+      const colorData = {
+        red: { label: "Red", value: "red", textColor: "#fff" },
+        yellow: { label: "Yellow", value: "yellow", textColor: "#222" },
+        blue: { label: "Blue", value: "blue", textColor: "#fff" },
+        orange: { label: "Orange", value: "orange", textColor: "#222" },
+        green: { label: "Green", value: "green", textColor: "#fff" },
+        purple: { label: "Purple", value: "purple", textColor: "#fff" },
+        "red-orange": { label: "Red-Orange", value: "#ff5349", textColor: "#fff" },
+        "yellow-orange": { label: "Yellow-Orange", value: "#ffae42", textColor: "#222" },
+        "yellow-green": { label: "Yellow-Green", value: "#9acd32", textColor: "#222" },
+        "blue-green": { label: "Blue-Green", value: "#0d98ba", textColor: "#fff" },
+        "blue-purple": { label: "Blue-Purple", value: "#6a5acd", textColor: "#fff" },
+        "red-purple": { label: "Red-Purple", value: "#c71585", textColor: "#fff" },
+        brown: { label: "Brown", value: "#7b4b2a", textColor: "#fff" }
+      };
+  
+      const levels = {
+        1: {
+          title: "Level 1: Basic Colors",
+          desc: "Learn how primary colors make secondary colors.",
+          colors: ["red", "yellow", "blue"],
+          mixMap: {
+            "red-yellow": { name: "Orange", color: "orange", textColor: "#222" },
+            "yellow-red": { name: "Orange", color: "orange", textColor: "#222" },
+            "red-blue": { name: "Purple", color: "purple", textColor: "#fff" },
+            "blue-red": { name: "Purple", color: "purple", textColor: "#fff" },
+            "blue-yellow": { name: "Green", color: "green", textColor: "#fff" },
+            "yellow-blue": { name: "Green", color: "green", textColor: "#fff" },
+            "red-red": { name: "Red", color: "red", textColor: "#fff" },
+            "yellow-yellow": { name: "Yellow", color: "yellow", textColor: "#222" },
+            "blue-blue": { name: "Blue", color: "blue", textColor: "#fff" }
+          }
+        },
+        2: {
+          title: "Level 2: Color Builder",
+          desc: "Use primary and secondary colors to build in-between colors.",
+          colors: ["red", "yellow", "blue", "orange", "green", "purple"],
+          mixMap: {
+            "red-yellow": { name: "Orange", color: "orange", textColor: "#222" },
+            "yellow-red": { name: "Orange", color: "orange", textColor: "#222" },
+            "red-blue": { name: "Purple", color: "purple", textColor: "#fff" },
+            "blue-red": { name: "Purple", color: "purple", textColor: "#fff" },
+            "blue-yellow": { name: "Green", color: "green", textColor: "#fff" },
+            "yellow-blue": { name: "Green", color: "green", textColor: "#fff" },
+  
+            "red-orange": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
+            "orange-red": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
+            "yellow-orange": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
+            "orange-yellow": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
+            "yellow-green": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
+            "green-yellow": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
+            "blue-green": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
+            "green-blue": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
+            "blue-purple": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
+            "purple-blue": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
+            "red-purple": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
+            "purple-red": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
+  
+            "orange-green": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
+            "green-orange": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
+            "orange-purple": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
+            "purple-orange": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
+            "green-purple": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
+            "purple-green": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
+  
+            "red-red": { name: "Red", color: "red", textColor: "#fff" },
+            "yellow-yellow": { name: "Yellow", color: "yellow", textColor: "#222" },
+            "blue-blue": { name: "Blue", color: "blue", textColor: "#fff" },
+            "orange-orange": { name: "Orange", color: "orange", textColor: "#222" },
+            "green-green": { name: "Green", color: "green", textColor: "#fff" },
+            "purple-purple": { name: "Purple", color: "purple", textColor: "#fff" }
+          }
+        },
+        3: {
+          title: "Level 3: Color Master",
+          desc: "Explore primary, secondary, and tertiary colors.",
+          colors: [
+            "red", "yellow", "blue",
+            "orange", "green", "purple",
+            "red-orange", "yellow-orange",
+            "yellow-green", "blue-green",
+            "blue-purple", "red-purple"
+          ],
+          mixMap: {
+            "red-yellow": { name: "Orange", color: "orange", textColor: "#222" },
+            "yellow-red": { name: "Orange", color: "orange", textColor: "#222" },
+            "red-blue": { name: "Purple", color: "purple", textColor: "#fff" },
+            "blue-red": { name: "Purple", color: "purple", textColor: "#fff" },
+            "blue-yellow": { name: "Green", color: "green", textColor: "#fff" },
+            "yellow-blue": { name: "Green", color: "green", textColor: "#fff" },
+  
+            "red-orange": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
+            "orange-red": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
+            "yellow-orange": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
+            "orange-yellow": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
+            "yellow-green": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
+            "green-yellow": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
+            "blue-green": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
+            "green-blue": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
+            "blue-purple": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
+            "purple-blue": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
+            "red-purple": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
+            "purple-red": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
+  
+            "red-orange-yellow-orange": { name: "Orange", color: "orange", textColor: "#222" },
+            "yellow-orange-red-orange": { name: "Orange", color: "orange", textColor: "#222" },
+            "yellow-orange-yellow-green": { name: "Yellow", color: "yellow", textColor: "#222" },
+            "yellow-green-yellow-orange": { name: "Yellow", color: "yellow", textColor: "#222" },
+            "yellow-green-blue-green": { name: "Green", color: "green", textColor: "#fff" },
+            "blue-green-yellow-green": { name: "Green", color: "green", textColor: "#fff" },
+            "blue-green-blue-purple": { name: "Blue", color: "blue", textColor: "#fff" },
+            "blue-purple-blue-green": { name: "Blue", color: "blue", textColor: "#fff" },
+            "blue-purple-red-purple": { name: "Purple", color: "purple", textColor: "#fff" },
+            "red-purple-blue-purple": { name: "Purple", color: "purple", textColor: "#fff" },
+            "red-purple-red-orange": { name: "Red", color: "red", textColor: "#fff" },
+            "red-orange-red-purple": { name: "Red", color: "red", textColor: "#fff" },
+  
+            "red-orange-blue-green": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
+            "blue-green-red-orange": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
+            "yellow-orange-blue-purple": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
+            "blue-purple-yellow-orange": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
+            "yellow-green-red-purple": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
+            "red-purple-yellow-green": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
+  
+            "red-red": { name: "Red", color: "red", textColor: "#fff" },
+            "yellow-yellow": { name: "Yellow", color: "yellow", textColor: "#222" },
+            "blue-blue": { name: "Blue", color: "blue", textColor: "#fff" },
+            "orange-orange": { name: "Orange", color: "orange", textColor: "#222" },
+            "green-green": { name: "Green", color: "green", textColor: "#fff" },
+            "purple-purple": { name: "Purple", color: "purple", textColor: "#fff" },
+            "red-orange-red-orange": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
+            "yellow-orange-yellow-orange": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
+            "yellow-green-yellow-green": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
+            "blue-green-blue-green": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
+            "blue-purple-blue-purple": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
+            "red-purple-red-purple": { name: "Red-Purple", color: "#c71585", textColor: "#fff" }
+          }
+        }
+      };
+  
+      function renderColors() {
+        colorButtonsContainer.innerHTML = "";
+        const colors = levels[currentLevel].colors;
+  
+        colors.forEach((key) => {
+          const item = colorData[key];
+          const option = document.createElement("div");
+          option.className = "color-option";
+  
+          option.innerHTML = `
+            <button
+              class="color-btn"
+              draggable="true"
+              data-color="${key}"
+              aria-label="${item.label}"
+              style="background: ${item.value};"
+            ></button>
+            <div class="color-label">${item.label}</div>
+          `;
+  
+          colorButtonsContainer.appendChild(option);
+        });
+  
+        attachDragEvents();
+      }
+  
+      function attachDragEvents() {
+        const draggableButtons = document.querySelectorAll(".color-btn");
+  
+        draggableButtons.forEach((btn) => {
+          btn.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", btn.dataset.color);
+          });
+        });
+      }
+  
+      function setLevel(level) {
+        currentLevel = level;
+        levelTitle.textContent = levels[level].title;
+        levelDesc.textContent = levels[level].desc;
+  
+        levelButtons.forEach((btn) => {
+          btn.classList.toggle("active", Number(btn.dataset.level) === level);
+        });
+  
+        resetLab();
+        renderColors();
+      }
+  
+      function updateDroppedDisplay() {
+        if (droppedColors.length === 0) {
+          selectedColorsText.textContent = "Dropped: none";
+        } else {
+          const names = droppedColors.map((color) => colorData[color]?.label || color);
+          selectedColorsText.textContent = "Dropped: " + names.join(" + ");
+        }
+      }
+  
+      function updateDropChips() {
+        dropChips.innerHTML = "";
+        droppedColors.forEach((color) => {
+          const chip = document.createElement("div");
+          chip.className = "drop-chip";
+          chip.textContent = colorData[color].label;
+          chip.style.background = colorData[color].value;
+          chip.style.color = colorData[color].textColor;
+          dropChips.appendChild(chip);
+        });
+      }
+  
+      function markUsedButtons() {
+        const buttons = document.querySelectorAll(".color-btn");
+        buttons.forEach((btn) => {
+          const color = btn.dataset.color;
+          btn.classList.toggle("used", droppedColors.includes(color));
+        });
+      }
+  
+      function showSparkle() {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.textContent = "✨";
+        sparkle.style.left = "50%";
+        sparkle.style.top = "50%";
+        sparkle.style.transform = "translate(-50%, -50%)";
+        bowl.appendChild(sparkle);
+  
+        setTimeout(() => sparkle.remove(), 700);
+      }
+  
+      function mixColors() {
+        if (droppedColors.length !== 2) return;
+  
+        const key = `${droppedColors[0]}-${droppedColors[1]}`;
+        const result = levels[currentLevel].mixMap[key];
+  
+        if (result) {
+          bowl.style.background = result.color;
+          bowl.style.color = result.textColor || "#222";
+          bowl.style.borderColor = result.color;
+          bowl.textContent = result.name;
+          resultText.textContent = `You made ${result.name}!`;
+          showSparkle();
+        } else {
+          bowl.style.background = "#fafafa";
+          bowl.style.color = "#444";
+          bowl.style.borderColor = "#cfcfcf";
+          bowl.textContent = "Oops!";
+          resultText.textContent = "That mix is not available in this level.";
+        }
+      }
+  
+      function handleColorDrop(color) {
+        if (!levels[currentLevel].colors.includes(color)) return;
+        if (droppedColors.length >= 2) return;
+  
+        droppedColors.push(color);
+        updateDroppedDisplay();
+        updateDropChips();
+        markUsedButtons();
+  
+        if (droppedColors.length === 2) {
+          mixColors();
+        }
+      }
+  
+      function resetLab() {
+        droppedColors = [];
+        bowl.textContent = "Mix Here";
         bowl.style.background = "#fafafa";
         bowl.style.color = "#444";
-        bowl.textContent = "Oops!";
-        resultText.textContent = "That mix is not available yet.";
+        bowl.style.borderColor = "#cfcfcf";
+        resultText.textContent = "";
+        updateDroppedDisplay();
+        updateDropChips();
       }
-    });
-
-    resetBtn.addEventListener("click", () => {
-      clearSelections();
-      bowl.style.background = "#fafafa";
-      bowl.style.color = "#444";
-      bowl.textContent = "Mix Here";
-      resultText.textContent = "";
-    });
-
-    updateSelectedDisplay();
-  </script>
-</body>
+  
+      bowl.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        bowl.classList.add("drag-over");
+      });
+  
+      bowl.addEventListener("dragleave", () => {
+        bowl.classList.remove("drag-over");
+      });
+  
+      bowl.addEventListener("drop", (e) => {
+        e.preventDefault();
+        bowl.classList.remove("drag-over");
+        const color = e.dataTransfer.getData("text/plain");
+        handleColorDrop(color);
+      });
+  
+      resetBtn.addEventListener("click", () => {
+        resetLab();
+        markUsedButtons();
+      });
+  
+      levelButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          setLevel(Number(btn.dataset.level));
+        });
+      });
+  
+      setLevel(1);
+    </script>
+  </body>
 </html>
