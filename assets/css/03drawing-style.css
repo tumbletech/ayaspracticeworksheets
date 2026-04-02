@@ -1,1 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Chewy&family=Comic+Neue:wght@400;700&display=swap');
 
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #ECEFF1;
+    font-family: 'Fredoka One', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navigation */
+.navbar {
+    background-color: #728FCE !important;
+}
+
+.navbar-nav a {
+    color: #fdef61;
+    font-family: 'Fredoka One', sans-serif;
+}
+
+/* Main content */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.container.text-center.my-5 {
+    flex: 1;
+}
+
+/* Fonts */
+h1, h2, h3 {
+    font-family: 'Chewy', cursive;
+}
+
+p {
+    font-family: 'Comic Neue', sans-serif;
+}
+
+/* Title */
+h2 {
+    font-size: 2.8rem;
+    color: #1f2937;
+    margin-bottom: 2rem;
+}
+
+/* Buttons */
+#kid-btn {
+    background-color: #1f6feb;
+    color: white;
+    font-family: 'Fredoka One', sans-serif;
+    font-size: 1.4rem;
+    padding: 18px 28px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+#kid-btn:hover {
+    background-color: #1558b0;
+    transform: scale(1.04);
+}
+
+/* Footer */
+footer {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px 10px;
+    text-align: center;
+    background: #f8f9fa;
+    position: static !important;
+    left: auto !important;
+    bottom: auto !important;
+    height: auto !important;
+    z-index: auto !important;
+}
+
+/* Tablet and below */
+@media (max-width: 1199.98px) {
+    .navbar-brand {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-brand img {
+        height: auto;
+        max-width: 260px;
+    }
+
+    .navbar-toggler {
+        margin: 10px auto 0;
+        display: block;
+    }
+
+    .navbar-collapse {
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    .navbar-nav {
+        gap: 6px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .container.text-center.my-5 {
+        margin-top: 2rem !important;
+        margin-bottom: 2rem !important;
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    h2 {
+        font-size: 2rem;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+
+    #kid-btn {
+        font-size: 1.1rem;
+        padding: 14px 20px;
+        margin: 0;
+    }
+
+    .row {
+        row-gap: 14px;
+    }
+
+    footer {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    footer p {
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand img {
+        max-width: 230px;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    #kid-btn {
+        font-size: 1rem;
+        padding: 12px 16px;
+    }
+
+    footer {
+        font-size: 0.82rem;
+        padding: 14px 12px;
+    }
+}
