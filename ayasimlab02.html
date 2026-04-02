@@ -22,7 +22,7 @@
 
     .app {
       width: 100%;
-      max-width: 900px;
+      max-width: 1100px;
       background: #ffffff;
       border-radius: 24px;
       padding: 24px;
@@ -44,10 +44,16 @@
 
     .color-buttons {
       display: grid;
-      grid-template-columns: repeat(3, minmax(90px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
       gap: 16px;
-      max-width: 420px;
+      max-width: 700px;
       margin: 0 auto 24px auto;
+    }
+
+    .color-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .color-btn {
@@ -73,15 +79,10 @@
 
     .color-label {
       margin-top: 8px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #444;
       font-weight: bold;
-    }
-
-    .color-option {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      text-align: center;
     }
 
     .mix-area {
@@ -118,6 +119,13 @@
       min-height: 32px;
     }
 
+    .selected-colors {
+      margin-top: 8px;
+      color: #555;
+      font-size: 1rem;
+      min-height: 24px;
+    }
+
     .controls {
       display: flex;
       justify-content: center;
@@ -149,13 +157,6 @@
       background: #e25f5f;
     }
 
-    .selected-colors {
-      margin-top: 16px;
-      color: #555;
-      font-size: 1rem;
-      min-height: 24px;
-    }
-
     .sparkle {
       position: absolute;
       font-size: 2rem;
@@ -183,10 +184,6 @@
         font-size: 1.6rem;
       }
 
-      .color-buttons {
-        grid-template-columns: repeat(2, minmax(90px, 1fr));
-      }
-
       .color-btn {
         width: 75px;
         height: 75px;
@@ -197,6 +194,10 @@
         height: 180px;
         font-size: 1rem;
       }
+
+      .color-label {
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -206,6 +207,7 @@
     <p class="subtitle">Pick 2 colors, then mix them!</p>
 
     <div class="color-buttons">
+      <!-- Primary Colors -->
       <div class="color-option">
         <button class="color-btn" data-color="red" style="background: red;" aria-label="Red"></button>
         <div class="color-label">Red</div>
@@ -221,6 +223,7 @@
         <div class="color-label">Blue</div>
       </div>
 
+      <!-- Secondary Colors -->
       <div class="color-option">
         <button class="color-btn" data-color="orange" style="background: orange;" aria-label="Orange"></button>
         <div class="color-label">Orange</div>
@@ -234,6 +237,37 @@
       <div class="color-option">
         <button class="color-btn" data-color="purple" style="background: purple;" aria-label="Purple"></button>
         <div class="color-label">Purple</div>
+      </div>
+
+      <!-- Tertiary Colors -->
+      <div class="color-option">
+        <button class="color-btn" data-color="red-orange" style="background: #ff5349;" aria-label="Red-Orange"></button>
+        <div class="color-label">Red-Orange</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="yellow-orange" style="background: #ffae42;" aria-label="Yellow-Orange"></button>
+        <div class="color-label">Yellow-Orange</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="yellow-green" style="background: #9acd32;" aria-label="Yellow-Green"></button>
+        <div class="color-label">Yellow-Green</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="blue-green" style="background: #0d98ba;" aria-label="Blue-Green"></button>
+        <div class="color-label">Blue-Green</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="blue-purple" style="background: #6a5acd;" aria-label="Blue-Purple"></button>
+        <div class="color-label">Blue-Purple</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="red-purple" style="background: #c71585;" aria-label="Red-Purple"></button>
+        <div class="color-label">Red-Purple</div>
       </div>
     </div>
 
@@ -266,6 +300,12 @@
       orange: "Orange",
       green: "Green",
       purple: "Purple",
+      "red-orange": "Red-Orange",
+      "yellow-orange": "Yellow-Orange",
+      "yellow-green": "Yellow-Green",
+      "blue-green": "Blue-Green",
+      "blue-purple": "Blue-Purple",
+      "red-purple": "Red-Purple",
       brown: "Brown"
     };
 
@@ -315,7 +355,44 @@
       "purple-orange": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
 
       "green-purple": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
-      "purple-green": { name: "Brown", color: "#6f4e37", textColor: "#fff" }
+      "purple-green": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
+
+      // Tertiary + Same
+      "red-orange-red-orange": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
+      "yellow-orange-yellow-orange": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
+      "yellow-green-yellow-green": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
+      "blue-green-blue-green": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
+      "blue-purple-blue-purple": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
+      "red-purple-red-purple": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
+
+      // Neighboring tertiary colors
+      "red-orange-yellow-orange": { name: "Orange", color: "orange", textColor: "#222" },
+      "yellow-orange-red-orange": { name: "Orange", color: "orange", textColor: "#222" },
+
+      "yellow-orange-yellow-green": { name: "Yellow", color: "yellow", textColor: "#222" },
+      "yellow-green-yellow-orange": { name: "Yellow", color: "yellow", textColor: "#222" },
+
+      "yellow-green-blue-green": { name: "Green", color: "green", textColor: "#fff" },
+      "blue-green-yellow-green": { name: "Green", color: "green", textColor: "#fff" },
+
+      "blue-green-blue-purple": { name: "Blue", color: "blue", textColor: "#fff" },
+      "blue-purple-blue-green": { name: "Blue", color: "blue", textColor: "#fff" },
+
+      "blue-purple-red-purple": { name: "Purple", color: "purple", textColor: "#fff" },
+      "red-purple-blue-purple": { name: "Purple", color: "purple", textColor: "#fff" },
+
+      "red-purple-red-orange": { name: "Red", color: "red", textColor: "#fff" },
+      "red-orange-red-purple": { name: "Red", color: "red", textColor: "#fff" },
+
+      // Opposite tertiary colors
+      "red-orange-blue-green": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
+      "blue-green-red-orange": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
+
+      "yellow-orange-blue-purple": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
+      "blue-purple-yellow-orange": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
+
+      "yellow-green-red-purple": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
+      "red-purple-yellow-green": { name: "Brown", color: "#8b5a2b", textColor: "#fff" }
     };
 
     function updateSelectedDisplay() {
