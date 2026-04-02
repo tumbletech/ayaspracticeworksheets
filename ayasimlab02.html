@@ -22,7 +22,7 @@
 
     .app {
       width: 100%;
-      max-width: 800px;
+      max-width: 900px;
       background: #ffffff;
       border-radius: 24px;
       padding: 24px;
@@ -43,21 +43,23 @@
     }
 
     .color-buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(90px, 1fr));
       gap: 16px;
-      margin-bottom: 24px;
+      max-width: 420px;
+      margin: 0 auto 24px auto;
     }
 
     .color-btn {
       width: 90px;
       height: 90px;
+      margin: 0 auto;
       border: none;
       border-radius: 50%;
       cursor: pointer;
       transition: transform 0.2s ease;
       box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+      position: relative;
     }
 
     .color-btn:hover {
@@ -67,6 +69,19 @@
     .color-btn.selected {
       outline: 5px solid #333;
       outline-offset: 4px;
+    }
+
+    .color-label {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .color-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .mix-area {
@@ -89,9 +104,11 @@
       font-size: 1.2rem;
       font-weight: bold;
       color: #444;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, color 0.3s ease;
       position: relative;
       overflow: hidden;
+      text-align: center;
+      padding: 20px;
     }
 
     .result-text {
@@ -166,6 +183,10 @@
         font-size: 1.6rem;
       }
 
+      .color-buttons {
+        grid-template-columns: repeat(2, minmax(90px, 1fr));
+      }
+
       .color-btn {
         width: 75px;
         height: 75px;
@@ -174,6 +195,7 @@
       .bowl {
         width: 180px;
         height: 180px;
+        font-size: 1rem;
       }
     }
   </style>
@@ -184,9 +206,35 @@
     <p class="subtitle">Pick 2 colors, then mix them!</p>
 
     <div class="color-buttons">
-      <button class="color-btn" data-color="red" style="background: red;" aria-label="Red"></button>
-      <button class="color-btn" data-color="yellow" style="background: yellow;" aria-label="Yellow"></button>
-      <button class="color-btn" data-color="blue" style="background: blue;" aria-label="Blue"></button>
+      <div class="color-option">
+        <button class="color-btn" data-color="red" style="background: red;" aria-label="Red"></button>
+        <div class="color-label">Red</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="yellow" style="background: yellow;" aria-label="Yellow"></button>
+        <div class="color-label">Yellow</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="blue" style="background: blue;" aria-label="Blue"></button>
+        <div class="color-label">Blue</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="orange" style="background: orange;" aria-label="Orange"></button>
+        <div class="color-label">Orange</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="green" style="background: green;" aria-label="Green"></button>
+        <div class="color-label">Green</div>
+      </div>
+
+      <div class="color-option">
+        <button class="color-btn" data-color="purple" style="background: purple;" aria-label="Purple"></button>
+        <div class="color-label">Purple</div>
+      </div>
     </div>
 
     <div class="mix-area">
@@ -211,26 +259,71 @@
 
     let selectedColors = [];
 
+    const colorDisplayNames = {
+      red: "Red",
+      yellow: "Yellow",
+      blue: "Blue",
+      orange: "Orange",
+      green: "Green",
+      purple: "Purple",
+      brown: "Brown"
+    };
+
     const mixMap = {
-      "red-yellow": { name: "Orange", color: "orange" },
-      "yellow-red": { name: "Orange", color: "orange" },
+      // Primary + Primary
+      "red-yellow": { name: "Orange", color: "orange", textColor: "#222" },
+      "yellow-red": { name: "Orange", color: "orange", textColor: "#222" },
 
-      "red-blue": { name: "Purple", color: "purple" },
-      "blue-red": { name: "Purple", color: "purple" },
+      "red-blue": { name: "Purple", color: "purple", textColor: "#fff" },
+      "blue-red": { name: "Purple", color: "purple", textColor: "#fff" },
 
-      "blue-yellow": { name: "Green", color: "green" },
-      "yellow-blue": { name: "Green", color: "green" },
+      "blue-yellow": { name: "Green", color: "green", textColor: "#fff" },
+      "yellow-blue": { name: "Green", color: "green", textColor: "#fff" },
 
-      "red-red": { name: "Red", color: "red" },
-      "yellow-yellow": { name: "Yellow", color: "yellow" },
-      "blue-blue": { name: "Blue", color: "blue" }
+      // Same colors
+      "red-red": { name: "Red", color: "red", textColor: "#fff" },
+      "yellow-yellow": { name: "Yellow", color: "yellow", textColor: "#222" },
+      "blue-blue": { name: "Blue", color: "blue", textColor: "#fff" },
+      "orange-orange": { name: "Orange", color: "orange", textColor: "#222" },
+      "green-green": { name: "Green", color: "green", textColor: "#fff" },
+      "purple-purple": { name: "Purple", color: "purple", textColor: "#fff" },
+
+      // Primary + Secondary
+      "red-orange": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
+      "orange-red": { name: "Red-Orange", color: "#ff5349", textColor: "#fff" },
+
+      "yellow-orange": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
+      "orange-yellow": { name: "Yellow-Orange", color: "#ffae42", textColor: "#222" },
+
+      "yellow-green": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
+      "green-yellow": { name: "Yellow-Green", color: "#9acd32", textColor: "#222" },
+
+      "blue-green": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
+      "green-blue": { name: "Blue-Green", color: "#0d98ba", textColor: "#fff" },
+
+      "blue-purple": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
+      "purple-blue": { name: "Blue-Purple", color: "#6a5acd", textColor: "#fff" },
+
+      "red-purple": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
+      "purple-red": { name: "Red-Purple", color: "#c71585", textColor: "#fff" },
+
+      // Secondary + Secondary
+      "orange-green": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
+      "green-orange": { name: "Brown", color: "#8b5a2b", textColor: "#fff" },
+
+      "orange-purple": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
+      "purple-orange": { name: "Brown", color: "#7b4b2a", textColor: "#fff" },
+
+      "green-purple": { name: "Brown", color: "#6f4e37", textColor: "#fff" },
+      "purple-green": { name: "Brown", color: "#6f4e37", textColor: "#fff" }
     };
 
     function updateSelectedDisplay() {
       if (selectedColors.length === 0) {
         selectedColorsText.textContent = "Selected: none";
       } else {
-        selectedColorsText.textContent = "Selected: " + selectedColors.join(" + ");
+        const names = selectedColors.map(color => colorDisplayNames[color] || color);
+        selectedColorsText.textContent = "Selected: " + names.join(" + ");
       }
     }
 
@@ -258,13 +351,13 @@
       button.addEventListener("click", () => {
         const color = button.dataset.color;
 
-        if (selectedColors.length < 2) {
-          selectedColors.push(color);
-          button.classList.add("selected");
-        } else {
+        if (selectedColors.length >= 2) {
           alert("You can only pick 2 colors.");
+          return;
         }
 
+        selectedColors.push(color);
+        button.classList.add("selected");
         updateSelectedDisplay();
       });
     });
@@ -280,11 +373,13 @@
 
       if (result) {
         bowl.style.background = result.color;
-        resultText.textContent = `You made ${result.name}!`;
+        bowl.style.color = result.textColor || "#222";
         bowl.textContent = result.name;
+        resultText.textContent = `You made ${result.name}!`;
         showSparkle();
       } else {
         bowl.style.background = "#fafafa";
+        bowl.style.color = "#444";
         bowl.textContent = "Oops!";
         resultText.textContent = "That mix is not available yet.";
       }
@@ -293,6 +388,7 @@
     resetBtn.addEventListener("click", () => {
       clearSelections();
       bowl.style.background = "#fafafa";
+      bowl.style.color = "#444";
       bowl.textContent = "Mix Here";
       resultText.textContent = "";
     });
@@ -300,4 +396,4 @@
     updateSelectedDisplay();
   </script>
 </body>
-  </html>
+</html>
