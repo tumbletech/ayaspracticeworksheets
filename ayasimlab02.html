@@ -548,7 +548,7 @@
               draggable="true"
               data-color="${key}"
               aria-label="${item.label}"
-              style="background: ${item.value};"
+              style="background: ${item.value}; ${key === 'white' ? 'border: 2px solid #ccc;' : ''}"
             ></button>
             <div class="color-label">${item.label}</div>
           `;
