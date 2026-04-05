@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aya Sim Lab - Sandwich Builder</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #fff7e6, #f5fbff);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .level-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .level-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 18px;
+      background: #ececec;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .level-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .level-btn.active {
+      background: #ffb347;
+      color: #fff;
+    }
+
+    .top-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .level-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .instruction-box {
+      background: #fff8dc;
+      border: 2px dashed #f0c36d;
+      border-radius: 16px;
+      padding: 14px;
+      max-width: 700px;
+      margin: 0 auto;
+      min-height: 70px;
+    }
+
+    .lab-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .ingredients-panel,
+    .build-panel {
+      background: #fafafa;
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .ingredients-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 14px;
+    }
+
+    .ingredient {
+      border: 2px solid #eee;
+      border-radius: 16px;
+      background: #fff;
+      padding: 12px;
+      text-align: center;
+      cursor: grab;
+      user-select: none;
+      transition: 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+
+    .ingredient:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.10);
+    }
+
+    .ingredient:active {
+      cursor: grabbing;
+    }
+
+    .ingredient.used {
+      opacity: 0.45;
+    }
+
+    .ingredient-emoji {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .ingredient-name {
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+
+    .target-wrap {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .mini-stack {
+      min-height: 90px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      background: #fff;
+      border: 2px dashed #ddd;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .drop-zone {
+      min-height: 320px;
+      background: #fff;
+      border: 3px dashed #cfcfcf;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      transition: 0.2s ease;
+    }
+
+    .drop-zone.drag-over {
+      border-color: #ffb347;
+      background: #fffaf2;
+      transform: scale(1.01);
+    }
+
+    .layer {
+      width: 180px;
+      max-width: 100%;
+      border-radius: 999px;
+      text-align: center;
+      font-weight: bold;
+      padding: 10px 14px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      font-size: 0.95rem;
+    }
+
+    .controls {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .action-btn {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+      background: #4f8cff;
+      transition: 0.2s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .reset-btn {
+      background: #ff7b7b;
+    }
+
+    .check-btn {
+      background: #35b36f;
+    }
+
+    .next-btn {
+      background: #ffb347;
+    }
+
+    .result-box {
+      margin-top: 18px;
+      text-align: center;
+      min-height: 40px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .helper-text {
+      margin-top: 10px;
+      text-align: center;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .tiny-layer {
+      min-width: 70px;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 800px) {
+      .lab-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .drop-zone {
+        min-height: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .ingredients-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .layer {
+        width: 150px;
+      }
+
+      .level-btn,
+      .action-btn {
+        width: 100%;
+        max-width: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>🥪 Aya Sim Lab - Sandwich Builder</h1>
+    <p class="subtitle">Drag ingredients into the sandwich area and build it layer by layer.</p>
+
+    <div class="level-selector">
+      <button class="level-btn active" data-level="1">Level 1: Copy the Sandwich</button>
+      <button class="level-btn" data-level="2">Level 2: Follow the Recipe</button>
+      <button class="level-btn" data-level="3">Level 3: Build Your Own</button>
+    </div>
+
+    <div class="top-info">
+      <div class="level-title" id="levelTitle">Level 1: Copy the Sandwich</div>
+      <div class="instruction-box" id="instructionBox">
+        Build the sandwich to match the target exactly.
+      </div>
+    </div>
+
+    <div class="lab-layout">
+      <div class="ingredients-panel">
+        <div class="panel-title">Ingredients</div>
+        <div class="ingredients-grid" id="ingredientsGrid"></div>
+      </div>
+
+      <div class="build-panel">
+        <div class="panel-title">Your Sandwich</div>
+
+        <div class="target-wrap" id="targetWrap">
+          <div style="font-weight: bold; margin-bottom: 8px;">Target Sandwich</div>
+          <div class="mini-stack" id="targetStack"></div>
+        </div>
+
+        <div class="drop-zone" id="dropZone">Drop ingredients here</div>
+
+        <div class="helper-text" id="helperText">
+          Drag ingredients into the sandwich area in the correct order.
+        </div>
+
+        <div class="controls">
+          <button class="action-btn check-btn" id="checkBtn">Check Sandwich</button>
+          <button class="action-btn reset-btn" id="resetBtn">Reset</button>
+          <button class="action-btn next-btn" id="nextBtn">Next Challenge</button>
+        </div>
+
+        <div class="result-box" id="resultBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ingredientsGrid = document.getElementById("ingredientsGrid");
+    const dropZone = document.getElementById("dropZone");
+    const resultBox = document.getElementById("resultBox");
+    const resetBtn = document.getElementById("resetBtn");
+    const checkBtn = document.getElementById("checkBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const levelButtons = document.querySelectorAll(".level-btn");
+    const levelTitle = document.getElementById("levelTitle");
+    const instructionBox = document.getElementById("instructionBox");
+    const targetWrap = document.getElementById("targetWrap");
+    const targetStack = document.getElementById("targetStack");
+    const helperText = document.getElementById("helperText");
+
+    let currentLevel = 1;
+    let challengeIndex = 0;
+    let currentBuild = [];
+
+    const ingredientData = {
+      bread: { name: "Bread", emoji: "🍞", bg: "#e0b97d", color: "#4a2f12" },
+      cheese: { name: "Cheese", emoji: "🧀", bg: "#ffd84d", color: "#5a4700" },
+      lettuce: { name: "Lettuce", emoji: "🥬", bg: "#7ed957", color: "#1f4d10" },
+      tomato: { name: "Tomato", emoji: "🍅", bg: "#ff6b6b", color: "#5c1010" },
+      egg: { name: "Egg", emoji: "🥚", bg: "#fff3c4", color: "#5a4c1a" },
+      ham: { name: "Ham", emoji: "🥓", bg: "#f4a6a6", color: "#5a1f1f" }
+    };
+
+    const levels = {
+      1: {
+        title: "Level 1: Copy the Sandwich",
+        instruction: "Build the sandwich to match the target exactly.",
+        showTarget: true,
+        challenges: [
+          ["bread", "cheese", "bread"],
+          ["bread", "egg", "bread"],
+          ["bread", "ham", "bread"],
+          ["bread", "lettuce", "tomato", "bread"]
+        ]
+      },
+      2: {
+        title: "Level 2: Follow the Recipe",
+        instruction: "",
+        showTarget: false,
+        challenges: [
+          {
+            text: "Put bread first, then cheese, then tomato, then bread on top.",
+            answer: ["bread", "cheese", "tomato", "bread"]
+          },
+          {
+            text: "Put bread first, then lettuce, then egg, then bread on top.",
+            answer: ["bread", "lettuce", "egg", "bread"]
+          },
+          {
+            text: "Put bread first, then ham, then cheese, then bread on top.",
+            answer: ["bread", "ham", "cheese", "bread"]
+          }
+        ]
+      },
+      3: {
+        title: "Level 3: Build Your Own",
+        instruction: "Create your own sandwich. Then check how many layers you made.",
+        showTarget: false
+      }
+    };
+
+    function createLayer(key, mini = false) {
+      const item = ingredientData[key];
+      const div = document.createElement("div");
+      div.className = mini ? "tiny-layer" : "layer";
+      div.style.background = item.bg;
+      div.style.color = item.color;
+      div.textContent = `${item.emoji} ${item.name}`;
+      return div;
+    }
+
+    function renderIngredients() {
+      ingredientsGrid.innerHTML = "";
+
+      Object.keys(ingredientData).forEach((key) => {
+        const item = ingredientData[key];
+        const card = document.createElement("div");
+        card.className = "ingredient";
+        card.draggable = true;
+        card.dataset.ingredient = key;
+        card.innerHTML = `
+          <span class="ingredient-emoji">${item.emoji}</span>
+          <div class="ingredient-name">${item.name}</div>
+        `;
+
+        card.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("text/plain", key);
+        });
+
+        ingredientsGrid.appendChild(card);
+      });
+    }
+
+    function renderTarget() {
+      targetStack.innerHTML = "";
+
+      if (currentLevel === 1) {
+        const target = levels[1].challenges[challengeIndex];
+        target.forEach((key) => {
+          targetStack.appendChild(createLayer(key, true));
+        });
+      }
+    }
+
+    function renderBuild() {
+      dropZone.innerHTML = "";
+
+      if (currentBuild.length === 0) {
+        dropZone.textContent = "Drop ingredients here";
+        return;
+      }
+
+      currentBuild.forEach((key) => {
+        dropZone.appendChild(createLayer(key));
+      });
+    }
+
+    function resetBuild() {
+      currentBuild = [];
+      resultBox.textContent = "";
+      renderBuild();
+    }
+
+    function setLevel(level) {
+      currentLevel = level;
+      challengeIndex = 0;
+
+      levelButtons.forEach((btn) => {
+        btn.classList.toggle("active", Number(btn.dataset.level) === level);
+      });
+
+      const levelInfo = levels[level];
+      levelTitle.textContent = levelInfo.title;
+
+      if (level === 1) {
+        instructionBox.textContent = levelInfo.instruction;
+        targetWrap.style.display = "block";
+        helperText.textContent = "Drag ingredients into the sandwich area in the correct order.";
+        nextBtn.style.display = "inline-block";
+        checkBtn.textContent = "Check Sandwich";
+        renderTarget();
+      } else if (level === 2) {
+        instructionBox.textContent = levels[2].challenges[challengeIndex].text;
+        targetWrap.style.display = "none";
+        helperText.textContent = "Follow the recipe carefully. Order matters.";
+        nextBtn.style.display = "inline-block";
+        checkBtn.textContent = "Check Recipe";
+      } else {
+        instructionBox.textContent = levelInfo.instruction;
+        targetWrap.style.display = "none";
+        helperText.textContent = "Build any sandwich you like. Stack it your way.";
+        nextBtn.style.display = "none";
+        checkBtn.textContent = "Count My Layers";
+      }
+
+      resetBuild();
+    }
+
+    function getCorrectAnswer() {
+      if (currentLevel === 1) {
+        return levels[1].challenges[challengeIndex];
+      }
+      if (currentLevel === 2) {
+        return levels[2].challenges[challengeIndex].answer;
+      }
+      return null;
+    }
+
+    function arraysMatch(a, b) {
+      if (!a || !b || a.length !== b.length) return false;
+      return a.every((item, index) => item === b[index]);
+    }
+
+    function checkAnswer() {
+      if (currentLevel === 3) {
+        if (currentBuild.length === 0) {
+          resultBox.textContent = "Build a sandwich first.";
+          return;
+        }
+
+        resultBox.textContent = `Nice! Your sandwich has ${currentBuild.length} layer${currentBuild.length > 1 ? "s" : ""}.`;
+        return;
+      }
+
+      const answer = getCorrectAnswer();
+
+      if (currentBuild.length === 0) {
+        resultBox.textContent = "Build the sandwich first.";
+        return;
+      }
+
+      if (arraysMatch(currentBuild, answer)) {
+        resultBox.textContent = "Correct! Great job! 🎉";
+      } else {
+        resultBox.textContent = "Not quite. Try again.";
+      }
+    }
+
+    function nextChallenge() {
+      if (currentLevel === 1) {
+        challengeIndex = (challengeIndex + 1) % levels[1].challenges.length;
+        renderTarget();
+        instructionBox.textContent = levels[1].instruction;
+      } else if (currentLevel === 2) {
+        challengeIndex = (challengeIndex + 1) % levels[2].challenges.length;
+        instructionBox.textContent = levels[2].challenges[challengeIndex].text;
+      }
+
+      resetBuild();
+    }
+
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropZone.classList.add("drag-over");
+    });
+
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("drag-over");
+    });
+
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.classList.remove("drag-over");
+
+      const key = e.dataTransfer.getData("text/plain");
+      if (!ingredientData[key]) return;
+
+      currentBuild.push(key);
+      resultBox.textContent = "";
+      renderBuild();
+    });
+
+    resetBtn.addEventListener("click", resetBuild);
+    checkBtn.addEventListener("click", checkAnswer);
+    nextBtn.addEventListener("click", nextChallenge);
+
+    levelButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        setLevel(Number(btn.dataset.level));
+      });
+    });
+
+    renderIngredients();
+    setLevel(1);
+  </script>
+</body>
+</html>
