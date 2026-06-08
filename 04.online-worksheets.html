@@ -15,7 +15,8 @@
             grid-template-columns: repeat(2, 280px);
             justify-content: center;
             gap: 80px 120px;
-        
+        }
+    
         .subject-btn {
             width: 280px;
             border-radius: 12px;
@@ -24,28 +25,31 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             transition: 0.2s;
         }
+    
         .subject-btn:hover {
             transform: scale(1.05);
         }
+    
         .subject-btn img {
             width: 100%;
         }
-
+    
         .drawing-card {
             grid-column: 1 / 3;
             justify-self: center;
-
+        }
+    
         @media (max-width: 768px) {
-            .subject-grid {
+            .subject-layout {
                 grid-template-columns: 1fr;
                 justify-items: center;
-                gap: 20px;
+                gap: 30px;
             }
-
-            .drawing-card: {
+    
+            .drawing-card {
                 grid-column: auto;
             }
-
+    
             .subject-btn {
                 width: 280px;
                 max-width: 90vw;
@@ -92,21 +96,18 @@
         <a href="online-math.html">
             <div class="subject-btn">
                 <img src="./assets/img/004.math.png" alt="Math">
-                <p class="mt-2">Math</p>
             </div>
         </a>
 
         <a href="#">
             <div class="subject-btn">
                 <img src="./assets/img/005.reading.png" alt="Reading">
-                <p class="mt-2">Reading</p>
             </div>
         </a>
 
-        <a href="#">
+        <a href="#" drawing-card>
             <div class="subject-btn">
                 <img src="./assets/img/006.drawing.png" alt="Drawing">
-                <p class="mt-2">Drawing</p>
             </div>
         </a>
 
