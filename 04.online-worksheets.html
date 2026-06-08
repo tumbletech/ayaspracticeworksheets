@@ -14,7 +14,8 @@
             display: grid;
             grid-template-columns: repeat(2, 280px);
             justify-content: center;
-            gap: 80px 120px;
+            column-gap: 120px;
+            row-gap: 60px;
         }
     
         .subject-btn {
@@ -35,8 +36,7 @@
         }
     
         .drawing-card {
-            grid-column: 1 / 3;
-            display: flex;
+            grid-column: 1 / -1;
             justify-self: center;
         }
     
