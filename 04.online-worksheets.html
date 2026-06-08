@@ -10,8 +10,14 @@
     <link rel="icon" type="image/png" href="assets/img/002.favicon-a.png">
 
     <style>
+        .subject-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 280px);
+            justify-content: center;
+            gap: 80px 120px;
+        
         .subject-btn {
-            width: 220px;
+            width: 280px;
             border-radius: 12px;
             padding: 15px;
             background: white;
@@ -25,18 +31,24 @@
             width: 100%;
         }
 
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 200px);
-            justify-content: center;
-            gap: 40px;
-        }
+        .drawing-card {
+            grid-column: 1 / 3;
+            justify-self: center;
 
         @media (max-width: 768px) {
             .subject-grid {
                 grid-template-columns: 1fr;
                 justify-items: center;
                 gap: 20px;
+            }
+
+            .drawing-card: {
+                grid-column: auto;
+            }
+
+            .subject-btn {
+                width: 280px;
+                max-width: 90vw;
             }
         }
     </style>
@@ -75,7 +87,7 @@
     <h1>Online Worksheets</h1>
     <p>Select a subject to begin</p>
 
-    <div class="subject-grid mt-4">
+    <div class="subject-layout mt-4">
 
         <a href="online-math.html">
             <div class="subject-btn">
