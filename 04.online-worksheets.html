@@ -11,7 +11,7 @@
 
     <style>
         .subject-btn {
-            width: 200px;
+            width: 220px;
             border-radius: 12px;
             padding: 15px;
             background: white;
@@ -23,6 +23,21 @@
         }
         .subject-btn img {
             width: 100%;
+        }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            justify-content: center;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .subject-grid {
+                grid-template-columns: 1fr;
+                justify-items: center;
+                gap: 20px;
+            }
         }
     </style>
 </head>
@@ -60,7 +75,7 @@
     <h1>Online Worksheets</h1>
     <p>Select a subject to begin</p>
 
-    <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+    <div class="subject-grid mt-4">
 
         <a href="online-math.html">
             <div class="subject-btn">
