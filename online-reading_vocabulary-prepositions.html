@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prepositions Online | Aya’s Educational Worksheets</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/mainstyle.css" />
+  <link rel="icon" type="image/png" href="assets/img/002.favicon-a.png" />
+
+  <style>
+    .worksheet-card {
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+    .muted-note {
+      font-size: 0.92rem;
+      color: #6c757d;
+    }
+    .stat-pill {
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+      background: #fff;
+    }
+    .scene-box {
+      width: 220px;
+      max-width: 100%;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    }
+    .question-sentence {
+      font-size: 1.15rem;
+    }
+    .choice-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+      gap: 8px;
+    }
+    .choice-label {
+      border: 1px solid #d6dce5;
+      border-radius: 12px;
+      padding: 9px 12px;
+      background: #fff;
+      cursor: pointer;
+      transition: 0.15s;
+      user-select: none;
+    }
+    .choice-label:hover {
+      background: #f3f8ff;
+      border-color: #8bbcf7;
+    }
+    .choice-label input {
+      margin-right: 8px;
+    }
+    .choice-label.correct-choice {
+      border-color: #198754;
+      background: #e9f7ef;
+    }
+    .choice-label.wrong-choice {
+      border-color: #dc3545;
+      background: #fdecee;
+    }
+    @media (max-width: 768px) {
+      .choice-wrap {
+        grid-template-columns: 1fr;
+      }
+      .scene-box {
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="./assets/img/001.mainlogo-b.png" alt="AEW Logo" height="90" />
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="a-worksheets.html">Worksheets</a></li>
+          <li class="nav-item"><a class="nav-link active" href="04.online-worksheets.html">Online Worksheets</a></li>
+          <li class="nav-item"><a class="nav-link" href="b-aboutus.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="stories-notes.html">Stories/Notes</a></li>
+          <li class="nav-item"><a class="nav-link" href="c-support.html">Support Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="e-faqs.html">FAQs</a></li>
+          <li class="nav-item"><a class="nav-link" href="d-contactus.html">Feedback/Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-5 flex-grow-1">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <h1 class="mb-1">Reading Online: Vocabulary - Prepositions</h1>
+        <div class="muted-note">
+          <strong>Practice Mode Notice:</strong>
+          Worksheet attempts in Practice Mode are not stored by the system. To keep a copy of your child’s results,
+          please take a screenshot after completing the worksheet.
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <span class="stat-pill">Questions: <strong id="qCount">10</strong></span>
+        <span class="stat-pill">Timer: <strong id="timer">00:00</strong></span>
+        <button class="btn btn-outline-secondary" id="btnNew">New Set</button>
+        <a class="btn btn-outline-secondary" href="04.online-worksheets.html">Back</a>
+      </div>
+    </div>
+
+    <div class="card worksheet-card mt-4">
+      <div class="card-body">
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-lg-8">
+            <label class="form-label mb-1">Practice Set</label>
+            <select class="form-select" id="difficulty">
+              <option value="easy" selected>Grade 2 Basic Prepositions</option>
+              <option value="medium">Grade 2 Mixed Prepositions</option>
+              <option value="hard">Grade 2 Challenge Prepositions</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <form id="worksheetForm" autocomplete="off">
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th style="width: 8%">#</th>
+                  <th style="width: 26%">Drawing</th>
+                  <th style="width: 30%">Sentence</th>
+                  <th style="width: 36%">Your Answer</th>
+                </tr>
+              </thead>
+              <tbody id="questionsBody"></tbody>
+            </table>
+          </div>
+        </form>
+
+        <div id="resultBox" class="mt-3"></div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4 d-grid mt-3">
+      <button class="btn btn-primary" id="btnSubmit">Submit Answers</button>
+    </div>
+
+    <div class="text-center mt-4 muted-note">
+      Tip: Choose an answer to begin the timer. Submit when done. Take a screenshot of the result if you want a record.
+    </div>
+  </main>
+
+  <footer class="text-center p-3 bg-light">
+    <p>© 2025 Aya's Educational Worksheets |
+      <a href="./assets/privatepolicy/AEW - Privacy Policy - April 2025 V1.pdf">Privacy Policy</a> |
+      <a href="./assets/termsofuse/AEW - Terms of Use - April 2025 V1.pdf">Terms of Use</a> |
+      <a href="./d-contactus.html">Contact</a>
+    </p>
+    <p>Designed by Tumbletech</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // --- CONFIG ---
+    const DEFAULT_COUNT = 10;
+
+    const CHOICES = ["in", "on", "under", "beside", "behind", "between", "above", "below", "in front of", "at"];
+
+    const QUESTION_BANK = {
+      easy: [
+        { scene: "ball-in-box", sentence: "The ball is ___ the box.", answer: "in" },
+        { scene: "cat-under-table", sentence: "The cat is ___ the table.", answer: "under" },
+        { scene: "bird-on-branch", sentence: "The bird is ___ the branch.", answer: "on" },
+        { scene: "dog-beside-chair", sentence: "The dog is ___ the chair.", answer: "beside" },
+        { scene: "bag-behind-door", sentence: "The bag is ___ the door.", answer: "behind" },
+        { scene: "girl-between-trees", sentence: "The girl is ___ the trees.", answer: "between" },
+        { scene: "kite-above-house", sentence: "The kite is ___ the house.", answer: "above" },
+        { scene: "fish-below-boat", sentence: "The fish is ___ the boat.", answer: "below" },
+        { scene: "boy-in-front-school", sentence: "The boy is ___ the school.", answer: "in front of" },
+        { scene: "book-on-desk", sentence: "The book is ___ the desk.", answer: "on" },
+        { scene: "apple-in-basket", sentence: "The apple is ___ the basket.", answer: "in" },
+        { scene: "rabbit-under-bench", sentence: "The rabbit is ___ the bench.", answer: "under" }
+      ],
+      medium: [
+        { scene: "ball-in-box", sentence: "The ball is ___ the box.", answer: "in" },
+        { scene: "cat-under-table", sentence: "The cat is ___ the table.", answer: "under" },
+        { scene: "bird-on-branch", sentence: "The bird is ___ the branch.", answer: "on" },
+        { scene: "dog-beside-chair", sentence: "The dog is ___ the chair.", answer: "beside" },
+        { scene: "bag-behind-door", sentence: "The bag is ___ the door.", answer: "behind" },
+        { scene: "girl-between-trees", sentence: "The girl is ___ the trees.", answer: "between" },
+        { scene: "kite-above-house", sentence: "The kite is ___ the house.", answer: "above" },
+        { scene: "fish-below-boat", sentence: "The fish is ___ the boat.", answer: "below" },
+        { scene: "boy-in-front-school", sentence: "The boy is ___ the school.", answer: "in front of" },
+        { scene: "book-on-desk", sentence: "The book is ___ the desk.", answer: "on" },
+        { scene: "apple-in-basket", sentence: "The apple is ___ the basket.", answer: "in" },
+        { scene: "rabbit-under-bench", sentence: "The rabbit is ___ the bench.", answer: "under" },
+        { scene: "lamp-beside-bed", sentence: "The lamp is ___ the bed.", answer: "beside" },
+        { scene: "sun-above-mountain", sentence: "The sun is ___ the mountain.", answer: "above" },
+        { scene: "crab-below-rock", sentence: "The crab is ___ the rock.", answer: "below" }
+      ],
+      hard: [
+        { scene: "boy-at-playground", sentence: "The boy is ___ the playground.", answer: "at" },
+        { scene: "ball-in-box", sentence: "The ball is ___ the box.", answer: "in" },
+        { scene: "cat-under-table", sentence: "The cat is ___ the table.", answer: "under" },
+        { scene: "bird-on-branch", sentence: "The bird is ___ the branch.", answer: "on" },
+        { scene: "dog-beside-chair", sentence: "The dog is ___ the chair.", answer: "beside" },
+        { scene: "bag-behind-door", sentence: "The bag is ___ the door.", answer: "behind" },
+        { scene: "girl-between-trees", sentence: "The girl is ___ the trees.", answer: "between" },
+        { scene: "kite-above-house", sentence: "The kite is ___ the house.", answer: "above" },
+        { scene: "fish-below-boat", sentence: "The fish is ___ the boat.", answer: "below" },
+        { scene: "boy-in-front-school", sentence: "The boy is ___ the school.", answer: "in front of" },
+        { scene: "book-on-desk", sentence: "The book is ___ the desk.", answer: "on" },
+        { scene: "apple-in-basket", sentence: "The apple is ___ the basket.", answer: "in" },
+        { scene: "rabbit-under-bench", sentence: "The rabbit is ___ the bench.", answer: "under" },
+        { scene: "lamp-beside-bed", sentence: "The lamp is ___ the bed.", answer: "beside" },
+        { scene: "sun-above-mountain", sentence: "The sun is ___ the mountain.", answer: "above" },
+        { scene: "crab-below-rock", sentence: "The crab is ___ the rock.", answer: "below" }
+      ]
+    };
+
+    // --- STATE ---
+    let questions = [];
+    let timerInterval = null;
+    let startTimeMs = null;
+    let timerRunning = false;
+
+    // --- ELEMENTS ---
+    const qCountEl = document.getElementById("qCount");
+    const timerEl = document.getElementById("timer");
+    const difficultyEl = document.getElementById("difficulty");
+    const questionsBodyEl = document.getElementById("questionsBody");
+    const resultBoxEl = document.getElementById("resultBox");
+    const btnNewEl = document.getElementById("btnNew");
+    const btnSubmitEl = document.getElementById("btnSubmit");
+    const worksheetFormEl = document.getElementById("worksheetForm");
+
+    // --- HELPERS ---
+    function shuffleArray(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
+
+    function formatTime(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const mm = String(Math.floor(totalSec / 60)).padStart(2, "0");
+      const ss = String(totalSec % 60).padStart(2, "0");
+      return `${mm}:${ss}`;
+    }
+
+    function startTimerIfNeeded() {
+      if (timerRunning) return;
+      timerRunning = true;
+      startTimeMs = Date.now();
+      timerEl.textContent = "00:00";
+
+      timerInterval = setInterval(() => {
+        timerEl.textContent = formatTime(Date.now() - startTimeMs);
+      }, 250);
+    }
+
+    function stopTimer() {
+      if (!timerRunning) return 0;
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerInterval = null;
+      const elapsed = Date.now() - startTimeMs;
+      return elapsed;
+    }
+
+    function resetTimer() {
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerInterval = null;
+      startTimeMs = null;
+      timerEl.textContent = "00:00";
+    }
+
+    function clearResults() {
+      resultBoxEl.innerHTML = "";
+    }
+
+    function makeChoices(answer) {
+      const wrong = CHOICES.filter(c => c !== answer);
+      return shuffleArray([answer, ...shuffleArray(wrong).slice(0, 3)]);
+    }
+
+    function buildQuestions(count) {
+      const diff = difficultyEl.value;
+      const bank = QUESTION_BANK[diff] || QUESTION_BANK.easy;
+
+      return shuffleArray(bank).slice(0, count).map(q => ({
+        ...q,
+        choices: makeChoices(q.answer)
+      }));
+    }
+
+    function svgScene(scene) {
+      const frameStart = `
+        <svg viewBox="0 0 320 220" role="img" class="w-100" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="220" rx="18" fill="#f7fbff"/>
+          <rect x="0" y="170" width="320" height="50" fill="#eef6e9"/>
+      `;
+      const frameEnd = `</svg>`;
+
+      const ball = (x, y, c = "#ef4444") => `
+        <circle cx="${x}" cy="${y}" r="28" fill="${c}" stroke="#b91c1c" stroke-width="3"/>
+        <circle cx="${x - 10}" cy="${y - 10}" r="7" fill="#fff" opacity="0.55"/>
+      `;
+
+      const box = (x, y) => `
+        <path d="M${x} ${y} L${x+120} ${y} L${x+145} ${y+35} L${x+25} ${y+35} Z" fill="#d79a4b" stroke="#8b5e2f" stroke-width="3"/>
+        <rect x="${x+25}" y="${y+35}" width="120" height="78" fill="#c98635" stroke="#8b5e2f" stroke-width="3"/>
+        <path d="M${x+25} ${y+35} L${x} ${y} M${x+145} ${y+35} L${x+120} ${y}" stroke="#8b5e2f" stroke-width="3"/>
+      `;
+
+      const table = () => `
+        <rect x="75" y="78" width="170" height="18" rx="5" fill="#9a5a2e"/>
+        <rect x="90" y="96" width="18" height="80" fill="#7c3f1d"/>
+        <rect x="210" y="96" width="18" height="80" fill="#7c3f1d"/>
+      `;
+
+      const cat = (x, y) => `
+        <circle cx="${x}" cy="${y}" r="27" fill="#f59e0b" stroke="#92400e" stroke-width="3"/>
+        <polygon points="${x-21},${y-18} ${x-9},${y-45} ${x+1},${y-18}" fill="#f59e0b" stroke="#92400e" stroke-width="3"/>
+        <polygon points="${x+21},${y-18} ${x+9},${y-45} ${x-1},${y-18}" fill="#f59e0b" stroke="#92400e" stroke-width="3"/>
+        <circle cx="${x-9}" cy="${y-4}" r="4" fill="#111827"/>
+        <circle cx="${x+9}" cy="${y-4}" r="4" fill="#111827"/>
+        <path d="M${x-8} ${y+10} Q${x} ${y+18} ${x+8} ${y+10}" stroke="#111827" stroke-width="3" fill="none"/>
+      `;
+
+      const tree = (x) => `
+        <rect x="${x-10}" y="95" width="20" height="80" fill="#8b5a2b"/>
+        <circle cx="${x}" cy="75" r="38" fill="#35b779"/>
+        <circle cx="${x-25}" cy="88" r="28" fill="#2fa568"/>
+        <circle cx="${x+25}" cy="88" r="28" fill="#2fa568"/>
+      `;
+
+      const child = (x, y, shirt = "#3b82f6") => `
+        <circle cx="${x}" cy="${y-45}" r="22" fill="#f7c59f" stroke="#b36b43" stroke-width="2"/>
+        <path d="M${x-18} ${y-55} Q${x} ${y-82} ${x+18} ${y-55}" fill="#7c2d12"/>
+        <rect x="${x-20}" y="${y-20}" width="40" height="45" rx="12" fill="${shirt}"/>
+        <line x1="${x-12}" y1="${y+25}" x2="${x-22}" y2="${y+58}" stroke="#1f2937" stroke-width="6" stroke-linecap="round"/>
+        <line x1="${x+12}" y1="${y+25}" x2="${x+22}" y2="${y+58}" stroke="#1f2937" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="${x-8}" cy="${y-48}" r="3" fill="#111827"/>
+        <circle cx="${x+8}" cy="${y-48}" r="3" fill="#111827"/>
+        <path d="M${x-7} ${y-36} Q${x} ${y-30} ${x+7} ${y-36}" stroke="#111827" stroke-width="2" fill="none"/>
+      `;
+
+      const chair = () => `
+        <rect x="190" y="90" width="70" height="20" rx="5" fill="#60a5fa"/>
+        <rect x="205" y="45" width="45" height="50" rx="6" fill="#93c5fd" stroke="#2563eb" stroke-width="3"/>
+        <rect x="200" y="110" width="12" height="65" fill="#2563eb"/>
+        <rect x="242" y="110" width="12" height="65" fill="#2563eb"/>
+      `;
+
+      const dog = (x, y) => `
+        <ellipse cx="${x}" cy="${y}" rx="40" ry="25" fill="#b7791f" stroke="#78350f" stroke-width="3"/>
+        <circle cx="${x+35}" cy="${y-14}" r="22" fill="#d97706" stroke="#78350f" stroke-width="3"/>
+        <ellipse cx="${x+45}" cy="${y-18}" rx="7" ry="12" fill="#111827"/>
+        <circle cx="${x+42}" cy="${y-19}" r="3" fill="#111827"/>
+        <path d="M${x-37} ${y-18} Q${x-65} ${y-38} ${x-55} ${y-5}" stroke="#78350f" stroke-width="5" fill="none" stroke-linecap="round"/>
+      `;
+
+      const door = () => `
+        <rect x="135" y="30" width="80" height="145" rx="5" fill="#8b5e3c" stroke="#5b371f" stroke-width="4"/>
+        <circle cx="200" cy="105" r="5" fill="#facc15"/>
+      `;
+
+      const bag = (x, y) => `
+        <rect x="${x}" y="${y}" width="58" height="65" rx="14" fill="#ef4444" stroke="#991b1b" stroke-width="3"/>
+        <path d="M${x+14} ${y} Q${x+29} ${y-22} ${x+44} ${y}" stroke="#991b1b" stroke-width="5" fill="none"/>
+        <rect x="${x+12}" y="${y+30}" width="34" height="18" rx="5" fill="#fecaca"/>
+      `;
+
+      const house = () => `
+        <rect x="115" y="85" width="100" height="85" fill="#fbbf24" stroke="#92400e" stroke-width="3"/>
+        <polygon points="100,90 165,35 230,90" fill="#ef4444" stroke="#991b1b" stroke-width="3"/>
+        <rect x="150" y="123" width="30" height="47" fill="#60a5fa" stroke="#1d4ed8" stroke-width="3"/>
+      `;
+
+      const boat = () => `
+        <path d="M80 90 L245 90 L220 130 L105 130 Z" fill="#f97316" stroke="#9a3412" stroke-width="3"/>
+        <rect x="145" y="45" width="12" height="45" fill="#78350f"/>
+        <polygon points="157,48 210,80 157,80" fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
+        <path d="M60 145 Q95 130 130 145 T200 145 T275 145" stroke="#60a5fa" stroke-width="6" fill="none"/>
+      `;
+
+      const fish = (x, y) => `
+        <ellipse cx="${x}" cy="${y}" rx="38" ry="22" fill="#38bdf8" stroke="#0369a1" stroke-width="3"/>
+        <polygon points="${x-38},${y} ${x-68},${y-23} ${x-68},${y+23}" fill="#38bdf8" stroke="#0369a1" stroke-width="3"/>
+        <circle cx="${x+18}" cy="${y-6}" r="4" fill="#111827"/>
+      `;
+
+      const branch = () => `
+        <path d="M60 120 C120 95 190 100 260 80" stroke="#854d0e" stroke-width="12" fill="none" stroke-linecap="round"/>
+      `;
+
+      const bird = (x, y) => `
+        <ellipse cx="${x}" cy="${y}" rx="32" ry="22" fill="#60a5fa" stroke="#1d4ed8" stroke-width="3"/>
+        <circle cx="${x+22}" cy="${y-16}" r="18" fill="#93c5fd" stroke="#1d4ed8" stroke-width="3"/>
+        <polygon points="${x+38},${y-16} ${x+60},${y-24} ${x+42},${y-5}" fill="#f97316"/>
+        <circle cx="${x+27}" cy="${y-20}" r="3" fill="#111827"/>
+      `;
+
+      const desk = () => `
+        <rect x="75" y="100" width="170" height="24" rx="7" fill="#a16207"/>
+        <rect x="90" y="124" width="18" height="50" fill="#854d0e"/>
+        <rect x="212" y="124" width="18" height="50" fill="#854d0e"/>
+      `;
+
+      const book = (x, y) => `
+        <rect x="${x}" y="${y}" width="80" height="50" rx="7" fill="#f43f5e" stroke="#9f1239" stroke-width="3"/>
+        <line x1="${x+40}" y1="${y}" x2="${x+40}" y2="${y+50}" stroke="#fff" stroke-width="3"/>
+      `;
+
+      const kite = () => `
+        <polygon points="160,35 200,75 160,115 120,75" fill="#f472b6" stroke="#be185d" stroke-width="3"/>
+        <path d="M160 115 C140 140 180 150 150 180" stroke="#6b21a8" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+      `;
+
+      const basket = () => `
+        <path d="M105 90 L215 90 L200 170 L120 170 Z" fill="#d97706" stroke="#92400e" stroke-width="3"/>
+        <path d="M125 90 Q160 45 195 90" stroke="#92400e" stroke-width="8" fill="none"/>
+        <line x1="115" y1="115" x2="205" y2="115" stroke="#fbbf24" stroke-width="4"/>
+        <line x1="112" y1="140" x2="208" y2="140" stroke="#fbbf24" stroke-width="4"/>
+      `;
+
+      const apple = (x, y) => `
+        <circle cx="${x-10}" cy="${y}" r="22" fill="#ef4444"/>
+        <circle cx="${x+10}" cy="${y}" r="22" fill="#ef4444"/>
+        <rect x="${x-4}" y="${y-36}" width="8" height="18" fill="#78350f"/>
+        <ellipse cx="${x+15}" cy="${y-32}" rx="14" ry="7" fill="#22c55e" transform="rotate(-25 ${x+15} ${y-32})"/>
+      `;
+
+      const bench = () => `
+        <rect x="75" y="88" width="170" height="20" rx="6" fill="#a16207"/>
+        <rect x="85" y="123" width="150" height="20" rx="6" fill="#a16207"/>
+        <rect x="95" y="143" width="14" height="35" fill="#713f12"/>
+        <rect x="210" y="143" width="14" height="35" fill="#713f12"/>
+      `;
+
+      const rabbit = (x, y) => `
+        <ellipse cx="${x}" cy="${y}" rx="34" ry="24" fill="#e5e7eb" stroke="#6b7280" stroke-width="3"/>
+        <circle cx="${x+28}" cy="${y-15}" r="18" fill="#f3f4f6" stroke="#6b7280" stroke-width="3"/>
+        <ellipse cx="${x+22}" cy="${y-42}" rx="8" ry="26" fill="#f3f4f6" stroke="#6b7280" stroke-width="3"/>
+        <ellipse cx="${x+40}" cy="${y-42}" rx="8" ry="26" fill="#f3f4f6" stroke="#6b7280" stroke-width="3"/>
+        <circle cx="${x+34}" cy="${y-18}" r="3" fill="#111827"/>
+      `;
+
+      const bed = () => `
+        <rect x="90" y="105" width="165" height="45" fill="#93c5fd" stroke="#2563eb" stroke-width="3"/>
+        <rect x="75" y="75" width="45" height="75" fill="#60a5fa" stroke="#2563eb" stroke-width="3"/>
+        <rect x="95" y="150" width="15" height="25" fill="#1d4ed8"/>
+        <rect x="230" y="150" width="15" height="25" fill="#1d4ed8"/>
+      `;
+
+      const lamp = (x, y) => `
+        <polygon points="${x},${y} ${x+50},${y} ${x+38},${y+35} ${x+12},${y+35}" fill="#facc15" stroke="#a16207" stroke-width="3"/>
+        <rect x="${x+22}" y="${y+35}" width="8" height="60" fill="#6b7280"/>
+        <rect x="${x+10}" y="${y+92}" width="32" height="10" rx="4" fill="#6b7280"/>
+      `;
+
+      const mountain = () => `
+        <polygon points="60,170 140,65 220,170" fill="#a7f3d0" stroke="#047857" stroke-width="3"/>
+        <polygon points="145,170 225,80 290,170" fill="#6ee7b7" stroke="#047857" stroke-width="3"/>
+      `;
+
+      const sun = (x, y) => `
+        <circle cx="${x}" cy="${y}" r="28" fill="#facc15" stroke="#f97316" stroke-width="4"/>
+        <g stroke="#f97316" stroke-width="5" stroke-linecap="round">
+          <line x1="${x}" y1="${y-48}" x2="${x}" y2="${y-68}"/>
+          <line x1="${x}" y1="${y+48}" x2="${x}" y2="${y+68}"/>
+          <line x1="${x-48}" y1="${y}" x2="${x-68}" y2="${y}"/>
+          <line x1="${x+48}" y1="${y}" x2="${x+68}" y2="${y}"/>
+        </g>
+      `;
+
+      const rock = () => `
+        <ellipse cx="160" cy="95" rx="85" ry="42" fill="#9ca3af" stroke="#4b5563" stroke-width="3"/>
+      `;
+
+      const crab = (x, y) => `
+        <ellipse cx="${x}" cy="${y}" rx="35" ry="22" fill="#ef4444" stroke="#991b1b" stroke-width="3"/>
+        <circle cx="${x-12}" cy="${y-10}" r="4" fill="#111827"/>
+        <circle cx="${x+12}" cy="${y-10}" r="4" fill="#111827"/>
+        <path d="M${x-35} ${y} L${x-60} ${y-20} M${x+35} ${y} L${x+60} ${y-20}" stroke="#991b1b" stroke-width="5" stroke-linecap="round"/>
+      `;
+
+      const playground = () => `
+        <rect x="50" y="135" width="220" height="40" rx="7" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+        <path d="M95 135 L150 70 L205 135" stroke="#2563eb" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <circle cx="150" cy="72" r="8" fill="#ef4444"/>
+      `;
+
+      switch (scene) {
+        case "ball-in-box":
+          return frameStart + box(90, 60) + ball(160, 115) + frameEnd;
+        case "cat-under-table":
+          return frameStart + table() + cat(160, 150) + frameEnd;
+        case "bird-on-branch":
+          return frameStart + branch() + bird(155, 92) + frameEnd;
+        case "dog-beside-chair":
+          return frameStart + chair() + dog(105, 145) + frameEnd;
+        case "bag-behind-door":
+          return frameStart + bag(105, 103) + door() + frameEnd;
+        case "girl-between-trees":
+          return frameStart + tree(80) + tree(240) + child(160, 118, "#ec4899") + frameEnd;
+        case "kite-above-house":
+          return frameStart + house() + kite() + frameEnd;
+        case "fish-below-boat":
+          return frameStart + boat() + fish(160, 165) + frameEnd;
+        case "boy-in-front-school":
+          return frameStart + house() + child(160, 124, "#22c55e") + frameEnd;
+        case "book-on-desk":
+          return frameStart + desk() + book(120, 55) + frameEnd;
+        case "apple-in-basket":
+          return frameStart + basket() + apple(160, 120) + frameEnd;
+        case "rabbit-under-bench":
+          return frameStart + bench() + rabbit(160, 160) + frameEnd;
+        case "lamp-beside-bed":
+          return frameStart + bed() + lamp(205, 55) + frameEnd;
+        case "sun-above-mountain":
+          return frameStart + mountain() + sun(160, 45) + frameEnd;
+        case "crab-below-rock":
+          return frameStart + rock() + crab(160, 155) + frameEnd;
+        case "boy-at-playground":
+          return frameStart + playground() + child(80, 120, "#22c55e") + frameEnd;
+        default:
+          return frameStart + ball(160, 110) + frameEnd;
+      }
+    }
+
+    function renderQuestions() {
+      questionsBodyEl.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = "question-row";
+
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>
+            <div class="scene-box">
+              ${svgScene(q.scene)}
+            </div>
+          </td>
+          <td class="question-sentence">
+            ${q.sentence.replace("___", "<strong>___</strong>")}
+          </td>
+          <td>
+            <div class="choice-wrap">
+              ${q.choices.map(choice => `
+                <label class="choice-label" id="choice_${idx}_${choice.replaceAll(" ", "_")}">
+                  <input
+                    type="radio"
+                    name="ans_${idx}"
+                    value="${choice}"
+                    aria-label="${choice} for question ${idx + 1}"
+                  />
+                  ${choice}
+                </label>
+              `).join("")}
+            </div>
+          </td>
+        `;
+
+        questionsBodyEl.appendChild(tr);
+      });
+
+      document.querySelectorAll("input[type='radio']").forEach(inp => {
+        inp.addEventListener("change", startTimerIfNeeded, { once: true });
+        inp.addEventListener("focus", startTimerIfNeeded, { once: true });
+      });
+    }
+
+    function newSet() {
+      resetTimer();
+      clearResults();
+
+      const count = DEFAULT_COUNT;
+      qCountEl.textContent = String(count);
+
+      questions = buildQuestions(count);
+      renderQuestions();
+    }
+
+    function grade() {
+      const elapsedMs = stopTimer();
+
+      let correct = 0;
+      const wrongItems = [];
+
+      questions.forEach((q, idx) => {
+        const checked = document.querySelector(`input[name="ans_${idx}"]:checked`);
+        const userAns = checked ? checked.value : "";
+        const isCorrect = userAns === q.answer;
+
+        if (isCorrect) correct++;
+        else wrongItems.push({
+          idx: idx + 1,
+          sentence: q.sentence,
+          correct: q.answer,
+          user: userAns
+        });
+
+        document.querySelectorAll(`input[name="ans_${idx}"]`).forEach(input => {
+          const label = input.closest(".choice-label");
+          label.classList.remove("correct-choice", "wrong-choice");
+
+          if (input.value === q.answer) label.classList.add("correct-choice");
+          if (input.checked && input.value !== q.answer) label.classList.add("wrong-choice");
+        });
+      });
+
+      const total = questions.length;
+      const scorePct = Math.round((correct / total) * 100);
+      const timeStr = formatTime(elapsedMs);
+
+      const passBadge = scorePct >= 80
+        ? `<span class="badge bg-success">Nice work</span>`
+        : `<span class="badge bg-warning text-dark">Keep practicing</span>`;
+
+      let wrongHtml = "";
+      if (wrongItems.length > 0) {
+        wrongHtml = `
+          <div class="mt-3">
+            <h5 class="mb-2">Review</h5>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Sentence</th>
+                    <th>Your Answer</th>
+                    <th>Correct Answer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${wrongItems.map(w => `
+                    <tr>
+                      <td>${w.idx}</td>
+                      <td>${w.sentence}</td>
+                      <td>${w.user === "" ? "—" : w.user}</td>
+                      <td><strong>${w.correct}</strong></td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      resultBoxEl.innerHTML = `
+        <div class="alert alert-info">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+              <h4 class="mb-1">Result</h4>
+              ${passBadge}
+            </div>
+            <div class="text-end">
+              <div><strong>Score:</strong> ${correct}/${total} (${scorePct}%)</div>
+              <div><strong>Time:</strong> ${timeStr}</div>
+            </div>
+          </div>
+          ${wrongHtml}
+          <div class="mt-3 d-flex flex-wrap gap-2">
+            <button class="btn btn-success" id="btnNext">Next Worksheet</button>
+            <button class="btn btn-outline-secondary" id="btnRetry">Retry Same Set</button>
+          </div>
+          <div class="muted-note mt-2">
+            Tip: Take a screenshot now if you want a record of this attempt.
+          </div>
+        </div>
+      `;
+
+      document.getElementById("btnNext")?.addEventListener("click", () => newSet());
+
+      document.getElementById("btnRetry")?.addEventListener("click", () => {
+        clearResults();
+        resetTimer();
+
+        document.querySelectorAll("input[type='radio']").forEach(inp => {
+          inp.checked = false;
+        });
+
+        document.querySelectorAll(".choice-label").forEach(label => {
+          label.classList.remove("correct-choice", "wrong-choice");
+        });
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    // --- EVENTS ---
+    btnNewEl.addEventListener("click", newSet);
+
+    btnSubmitEl.addEventListener("click", (e) => {
+      e.preventDefault();
+      grade();
+      resultBoxEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    worksheetFormEl.addEventListener("submit", (e) => e.preventDefault());
+
+    difficultyEl.addEventListener("change", newSet);
+
+    // --- INIT ---
+    newSet();
+  </script>
+</body>
+</html>
